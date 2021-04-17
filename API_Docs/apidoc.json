@@ -1,0 +1,268 @@
+openapi: 3.0.1
+info:
+  title: Kitchen Makeovers Quotes
+  description: 'This is a system for generating quotes simply and quickly for Kitchen Makeovers.'
+  contact:
+    email: andrew@kitchenmakeovers.ca
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://mandrewnator.com/group-project/api/v2
+tags:
+- name: quotes
+  description: Everything about current quotes
+- name: login
+  description: Access to the Quotes Admin Page
+paths:
+  /quotes:
+    post:
+      tags:
+      - quotes
+      summary: Add a new quote to the database
+      operationId: addQuote
+      requestBody:
+        description: Quote object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quote'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+    get:
+      tags:
+      - quotes
+      summary: Returns all quotes
+      description: Returns all quotes, sorted by quoteID
+      operationId: getQuote
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quote'
+        404:
+          description: No quotes found
+          content: {}
+      security:
+      - api_key: []
+    
+  /quotes/{quoteID}:
+    get:
+      tags:
+      - quotes
+      summary: Find quote by ID
+      description: Returns a single quote
+      operationId: getQuoteById
+      parameters:
+      - name: quoteID
+        in: path
+        description: ID of quote to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quote'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Pet not found
+          content: {}
+      security:
+      - api_key: []
+    delete:
+      tags:
+      - quotes
+      summary: Deletes a quote
+      operationId: deleteQuote
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      - name: quoteID
+        in: path
+        description: Quote id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Quote not found
+          content: {}
+    put:
+      tags:
+      - quotes
+      summary: Updated quote
+      description: Update a quote with the specified ID
+      operationId: updateQuote
+      parameters:
+      - name: quoteID
+        in: path
+        description: name that need to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Updated user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        400:
+          description: Invalid user supplied
+          content: {}
+        404:
+          description: User not found
+          content: {}
+      
+  /quotes/search/{search-terms}:
+    get:
+      tags:
+      - quotes
+      summary: Find quote that has any content matching search terms
+      description: Returns a list of quotes
+      operationId: getQuoteByTerm
+      parameters:
+      - name: search-terms
+        in: path
+        description: ID of quote to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quote'
+        400:
+          description: Invalid term supplied
+          content: {}
+        404:
+          description: not quotes found
+          content: {}
+      security:
+      - api_key: []
+
+  /login:
+    post:
+      tags:
+      - login
+      summary: Logs user into the system
+      operationId: loginUser
+      parameters:
+      - name: username
+        in: query
+        description: The user name for login
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/xml:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid username/password supplied
+          content: {}
+components:
+  schemas:
+    quote:
+      required:
+      - customer-name
+      - customer-address
+      - line-items
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        customer-name:
+          type: string
+          example: "Frank"
+        customer-address:
+          type: string
+          example: "123 Beverly Road, Palm Beach, California, 98212, U.S.A."
+        line-items:
+          type: array
+          items:
+            $ref: '#/components/schemas/line-item'
+              
+            
+    line-item:
+      required:
+      - description
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+          example: "Kitchen Cabinet Refinishing"
+        details:
+          type: string
+          example: "Your kitchen will be sprayed with an industrial polyurethane"
+        quantity:
+          type: integer
+          format: int64
+          example: 1
+        price:
+          type: number
+          format: double
+          example: 5123.43
+            
+            
+    user:
+      required:
+      - username
+      - password
+      type: object
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
