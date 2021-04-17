@@ -5,7 +5,14 @@ const url = require('url');
 const express = require('express');
 const router = express.Router();
 const app = express();
-const ENDPOINT = "/kmquotes/api/v1";
+const os = require('os');
+const ENDPOINT;
+
+//We don't have to change endpoint address manually for deployment
+if(os.hostname().indexOf("local") > -1)
+  ENDPOINT = "/kmquotes/api/v1";
+else
+  ENDPOINT = "";
 
 const con = mysql.createConnection({
     host: "localhost",

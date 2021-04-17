@@ -1,4 +1,10 @@
-const SERVER = "http://192.168.1.68:8080";//https://mandrewnator.com/kmquotes/api/v1";
+//We don't have to change anything for deployment
+const SERVER;
+if (window.location.host == "localhost") {
+    SERVER = "http://localhost:8080";
+} else {
+    SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
+}
 
 function loadAllQuotes(display_div) {
     areaLoading(display_div);
