@@ -42,6 +42,18 @@
                         <h2 class="heading">KM Quotes</h2>
                         <div id="quoteDisplayDiv" class="text-center">
                             
+                            <div id="quoteBoxTemplate" class="template">
+                            <div class="card bg-light col-sm-12 col-md-12 col-lg-6 col-xl-3 d-inline-block">
+                                <div class="card-body">
+                                    <h4 class="card-title">%id%</h4>
+                                    <p class="card-text">Quote # %customer_id%</p>
+                                    <p class="card-text">%text%</p>
+                                    <a id="q'+i+'EditBtn" class="btn btn-info float-right">Edit Quote</a>
+                                </div>
+                            </div>
+                            </div>
+
+
                         </div> 
                     </div>
                 </section>
@@ -53,7 +65,7 @@
     <!--Page Specific Script-->
     <script type="text/javascript">
         window.onload = function() {
-            loadAllQuotes(document.getElementById("quoteDisplayDiv"));
+            loadAllQuotes(document.getElementById("quoteDisplayDiv"), document.getElementById("quoteBoxTemplate"));
         }
     </script>
 

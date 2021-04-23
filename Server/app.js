@@ -6,19 +6,22 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const os = require('os');
-const ENDPOINT;
+var ENDPOINT;
 
 //We don't have to change endpoint address manually for deployment
-if(os.hostname().indexOf("local") > -1)
-  ENDPOINT = "/kmquotes/api/v1";
-else
+if(os.hostname().indexOf("local") > -1){
   ENDPOINT = "";
+  console.log("Localhost Server");
+} else {
+  ENDPOINT = "/kmquotes/api/v1";
+  console.log("Remote Server");
+}
 
 const con = mysql.createConnection({
     host: "localhost",
-    user: "mandrewn_comp351",
-    password: "hAppy0ing",
-    database: "mandrewn_comp351"
+    user: "kmquotes_user",
+    password: "hAppy$elling",
+    database: "kmquotes"
 });
 
 con.connect(function(err) {
@@ -59,7 +62,7 @@ function checkAIDExists(aID, i) {
 }
 
 //GET METHODS----------------
-app.get(ENDPOINT+"/quotes", (req, res) => {
+app.get("/quotes", (req, res) => {
     console.log("...is a GET message");
     //Values
     const q = url.parse(req.url, true);
@@ -75,7 +78,7 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
     });
     */
     
-    let sql = "SELECT * FROM quotes";
+    let sql = "SELECT * FROM quote";
       
     console.log("about to do something");
     con.query(sql, function (err, result) {
@@ -87,7 +90,7 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
 
         Object.keys(result).forEach(function(key) {
             let row = result[key];
-            quotesObj.push({"id": row.id, "name": row.name, "address": row.address})
+            quotesObj.push({"id": row.id, "customer_id": row.customer_id})
         });
         let messageStr = JSON.stringify(quotesObj);
         console.log("Sending Object: "+messageStr);
