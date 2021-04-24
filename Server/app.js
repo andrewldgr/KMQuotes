@@ -5,13 +5,24 @@ const url = require('url');
 const express = require('express');
 const router = express.Router();
 const app = express();
-const ENDPOINT = "/kmquotes/api/v1";
+const os = require('os');
+
+var ENDPOINT;
+
+//We don't have to change endpoint address manually for deployment
+if(os.hostname().indexOf("local") > -1){
+  ENDPOINT = "";
+  console.log("Localhost Server");
+} else {
+  ENDPOINT = "/kmquotes/api/v1";
+  console.log("Remote Server");
+}
 
 const con = mysql.createConnection({
     host: "localhost",
-    user: "mandrewn_comp351",
-    password: "hAppy0ing",
-    database: "mandrewn_comp351"
+    user: "mandrewn_kmquotes_user",
+    password: "hAppy$elling",
+    database: "mandrewn_kmquotes"
 });
 
 con.connect(function(err) {
@@ -20,7 +31,7 @@ con.connect(function(err) {
 });
 
 app.use(function(req, res, next) {
-    console.log("Header Created");
+    console.log("Message Recieved");
     res.header('Access-control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -56,32 +67,25 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
     console.log("...is a GET message");
     //Values
     const q = url.parse(req.url, true);
-
-    /*
-    let tempSqlCommand = "DELETE FROM chatApp WHERE id > 100";
-
-    con.query(tempSqlCommand, function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-        res.end("Entries Deleted!");
-    });
-    */
     
-    let sql = "SELECT * FROM quotes";
-      
-    console.log("about to do something");
+
+    let sql = "SELECT q.id, c.first_name, c.last_name, li.cost FROM quote q, customer c, (SELECT quote_id, ROUND(SUM(price), 2) AS cost FROM line_item GROUP BY quote_id) li WHERE q.customer_id=c.id && li.quote_id=q.id;";
+
     con.query(sql, function (err, result) {
         if (err) {
             console.log(err);
         }
-        
+
         let quotesObj = [];
 
-        Object.keys(result).forEach(function(key) {
-            let row = result[key];
-            quotesObj.push({"id": row.id, "name": row.name, "address": row.address})
-        });
+        if (result != null) {
+            Object.keys(result).forEach(function(key) {
+                let row = result[key];
+                quotesObj.push({"quote_no": row.id, "cost": row.cost, "first_name": row.first_name, "last_name": row.last_name})
+            });
+        } else {
+            console.log("no data!");
+        }
         let messageStr = JSON.stringify(quotesObj);
         console.log("Sending Object: "+messageStr);
 

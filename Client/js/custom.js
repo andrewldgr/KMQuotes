@@ -1,12 +1,18 @@
-const SERVER = "http://192.168.1.68:8080";//https://mandrewnator.com/kmquotes/api/v1";
+//We don't have to change anything for deployment
+var SERVER;
+if (window.location.host == "localhost") {
+    SERVER = "http://localhost:8080";
+} else {
+    SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
+}
 
-function loadAllQuotes(display_div) {
+function loadAllQuotes(display_div, template_div) {
     areaLoading(display_div);
 
     retrieveAllQuotes()
     .then( function(resolveText) {
         let qObject = JSON.parse(resolveText);
-        displayQuotes(qObject, display_div)
+        displayQuotes(qObject, display_div, template_div)
         .then( function(resolveText) {
             areaLoaded(display_div);
         });
@@ -34,27 +40,36 @@ function retrieveAllQuotes(){
     });
 }
 
-function displayQuotes(qObject, display_div) {
+function displayQuotes(qObject, display_div, template_div) {
     return new Promise (function(resolve) {
         let displayStr = "";
-
+        let templateData = {};
 
         for (i=0; i<qObject.length; i++){
 
-            displayStr = 
-            '<div class="card bg-light col-sm-12 col-md-12 col-lg-6 col-xl-3 d-inline-block">'
-            +'<div class="card-body">'
-                +'<h4 class="card-title">'+(qObject[i].name)+'</h4>'
-                +'<p class="card-text">Quote #'+qObject[i].id+'</p>'
-                +'<p class="card-text">'+qObject[i].address+'</p>'
-                +'<a id="q'+i+'EditBtn" class="btn btn-info float-right">Edit Quote</a>'
-            +'</div>'
-            +'</div>';
+            displayStr = render(template_div.innerHTML, qObject[i]);
 
             display_div.insertAdjacentHTML('beforeend', displayStr);
         }
+        display_div.classList.remove("template");
         resolve();
     });
+}
+
+function render(template, fillData) {
+      
+    let renderedData = template;
+
+    Object.keys(fillData).forEach(key => {
+
+        const regex = new RegExp("%"+key+"%", 'g');
+
+        //renderedData = renderedData.split(regex).join(fillData[key]);
+
+        renderedData = renderedData.replace(regex, fillData[key]);
+    });
+
+    return renderedData;
 }
 
 function areaLoading(obj){
