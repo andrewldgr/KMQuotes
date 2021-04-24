@@ -39,8 +39,9 @@
             <div class="col-12">
                 <section class="section">
                     <div class="section-inner shadow-sm rounded">
-                        <a id="saveQuote" class="btn btn-outline-success float-right">Save Changes</a>
-                        <h2 class="heading">Edit Quote</h2>
+                        <a id="editQuote" class="btn btn-outline-info float-right">Edit This Quote</a>
+                        <h2 class="heading">View Quote</h2>
+                        
                         <hr />
                         <div id="quoteDisplayDiv" class="template">
 
@@ -74,16 +75,14 @@
                                 <div id="editLineItemTemplate" class="template">
                                     <div class="card bg-light col-12 d-inline-block">
                                         <div class="card-body">
-                                            <label>Title</label>
-                                            <h4 class="card-title"><input type="text" value="%title%" class="form-control"></h4>
-                                            <label>Description</label>
-                                            <textarea class="card-text col-12 form-control" rows="4">%description%</textarea>
-                                            <p class="card-text">%quantity% X %price%</p>
+                                            <h4 class="card-title">%title%</h4>
+                                            <p class="card-text col-12">%description%</p>
+                                            <p class="card-text text-right">QTY. %quantity% X $%price% = <span class="font-weight-bold">$%line_total%</span></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="card border-success mb-3 text-right font-weight-bold">Total: $%quote_total%</div>
 
                         </div> 
                     </div>
@@ -101,8 +100,9 @@
             loadQuote(quote_id, document.getElementById("quoteDisplayDiv"),
                                 document.getElementById("editLineItemTemplate"));
 
-            document.getElementById("saveQuote").addEventListener("click", viewQuote(quote_id));
+            document.getElementById("editQuote").addEventListener("click", editQuote(quote_id));
         }
+        
     </script>
 
 </body>

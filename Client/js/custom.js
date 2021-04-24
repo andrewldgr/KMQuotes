@@ -6,13 +6,13 @@ if (window.location.host == "localhost") {
     SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
 }
 
-function loadQuoteForEditing(quote_id, display_div, template_div, line_item_div) {
+function loadQuote(quote_id, display_div, line_item_template_div) {
     areaLoading(display_div);
 
     retrieveQuote(quote_id)
     .then (function(resolveText) {
         let qObject = JSON.parse(resolveText);
-        displayQuoteForEditing(qObject, display_div, template_div, line_item_div)
+        displayQuote(qObject, display_div, line_item_template_div)
         .then( function() {
             areaLoaded(display_div);
         });
@@ -40,18 +40,24 @@ function retrieveQuote(quote_id) {
     });
 }
 
-function displayQuoteForEditing(qObject, display_div, template_div, line_item_div) {
+function displayQuote(qObject, display_div, line_item_template_div) {
     return new Promise (function(resolve) {
-        let displayStr = "";
 
-        displayStr = render(template_div.innerHTML, qObject);
-        display_div.insertAdjacentHTML('beforeend', displayStr);
+        qObject.quote_total = 0;
 
         for (i=0; i<qObject.line_items.length; i++){
+            //Quick calculation for line item totals
+            qObject.line_items[i].line_total = (qObject.line_items[i].quantity*qObject.line_items[i].price)
+            qObject.quote_total += qObject.line_items[i].line_total;
 
-            displayStr = render(line_item_div.innerHTML, qObject.line_items[i]);
-            display_div.insertAdjacentHTML('beforeend', displayStr);
+            //display the info
+            let new_div = document.createElement('div');
+            new_div.innerHTML = render(line_item_template_div.innerHTML, qObject.line_items[i]);
+            document.getElementById("lineItemDisplayDiv").appendChild(new_div);
         }
+
+        display_div.innerHTML = render(display_div.innerHTML, qObject);
+        display_div.classList.remove("template");
 
         resolve();
     });
@@ -101,7 +107,7 @@ function displayQuotes(qObject, display_div, template_div) {
             displayStr = render(template_div.innerHTML, qObject[i]);
             display_div.insertAdjacentHTML('beforeend', displayStr);
             //Use Curry Function to bind values
-            document.getElementById('q'+qObject[i].id+'EditBtn').addEventListener("click", editQuote(qObject[i].id));
+            document.getElementById('q'+qObject[i].id+'EditBtn').addEventListener("click", viewQuote(qObject[i].id));
         }
         resolve();
     });
@@ -123,10 +129,17 @@ function render(template, fillData) {
     return renderedData;
 }
 
-function editQuote(quote_no) {
+function editQuote(quote_id) {
     //Curry function as it's invoked inside a loop's click listener
     return function () {
-        window.location.href = "edit-quote.html?quote_id="+quote_no;
+        window.location.href = "edit-quote.html?quote_id="+quote_id;
+    }
+}
+
+function viewQuote(quote_id) {
+    //Curry function as it's invoked inside a loop's click listener
+    return function () {
+        window.location.href = "view-quote.html?quote_id="+quote_id;
     }
 }
 
