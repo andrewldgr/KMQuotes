@@ -65,114 +65,56 @@ function checkAIDExists(aID, i) {
 //GET METHODS----------------
 app.get(ENDPOINT+"/quotes", (req, res) => {
     console.log("...is a GET message");
-    //Values
-    const q = url.parse(req.url, true);
     
-
-    let sql = "SELECT q.id, c.first_name, c.last_name, li.cost FROM quote q, customer c, (SELECT quote_id, ROUND(SUM(price), 2) AS cost FROM line_item GROUP BY quote_id) li WHERE q.customer_id=c.id && li.quote_id=q.id;";
+    let sql =    "SELECT q.id, c.first_name, c.last_name, li.cost "
+                +"FROM quote q, customer c, address a, "
+                +"    (SELECT quote_id, ROUND(SUM(price), 2) AS cost FROM line_item GROUP BY quote_id) li "
+                +"WHERE q.address_id=a.id && li.quote_id=q.id && a.customer_id=c.id;";
 
     con.query(sql, function (err, result) {
         if (err) {
             console.log(err);
         }
 
-        let quotesObj = [];
-
-        if (result != null) {
-            Object.keys(result).forEach(function(key) {
-                let row = result[key];
-                quotesObj.push({"quote_no": row.id, "cost": row.cost, "first_name": row.first_name, "last_name": row.last_name})
-            });
-        } else {
-            console.log("no data!");
-        }
-        let messageStr = JSON.stringify(quotesObj);
+        let messageStr = JSON.stringify(result);
         console.log("Sending Object: "+messageStr);
 
         res.end(messageStr);
-        
-
     });
-
-
-    if (q.query['function'] == "GETINFO") {
-        console.log("GETINFO message recieved");
-
-        let sql = "SELECT * FROM questions";
-
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-
-            let qObj = [];
-
-            Object.keys(result).forEach(function(key) {
-                let row = result[key];
-                qObj.push({"qID": row.QID, "qText": row.QText, "codeText": row.CodeText})
-            });
-            let messageStr = JSON.stringify(Object.assign({}, qObj));
-            console.log("Sending Object: "+messageStr);
-
-            res.end(messageStr);
-
-        });
-
-    }
-    if (q.query['function'] == "GETANSWERS") {
-        console.log("GETANSWERS message recieved");
-
-        let sql = "SELECT * FROM answers WHERE QID = "+q.query['qid'];
-
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-
-            let aObj = [];
-            Object.keys(result).forEach(function(key) {
-                let row = result[key];
-                aObj.push({"aID": row.AID, "aText": row.AText, "isCorrect": row.IsCorrect});
-            });
-            let messageStr = JSON.stringify(Object.assign({}, aObj));
-            console.log("Sending Object: "+messageStr);
-
-            res.end(messageStr);
-        });
-    }
-
-    if (q.query['function'] == "GETALLINFO") {
-        console.log("GETALLINFO message recieved");
-
-        let sql = "SELECT * FROM questions";
-
-        con.query(sql, function (err, result) {
-            if (err) throw err;
-
-            let qObj = [];
-
-            Object.keys(result).forEach(function(qkey) {
-                let qrow = result[qkey];
-                qObj.push({"qID": qrow.QID, "qText": qrow.QText, "codeText": qrow.CodeText, "answers": new Array()})
-            });
-            let sql = "SELECT * FROM answers";
-
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-
-                Object.keys(result).forEach(function(akey) {
-                    let arow = result[akey];
-                    for (i=0; i < qObj.length; i++) {
-                        if (qObj[i].qID == arow.QID) {
-                            qObj[i].answers.push({"aID": arow.AID, "aText": arow.AText, "isCorrect": arow.IsCorrect});
-                        }
-                    }
-                });
-                let messageStr = JSON.stringify(Object.assign({}, qObj));
-                console.log("Sending Object: "+messageStr);
-
-                res.end(messageStr);
-            });
-            
-        });
-    }
 });
+
+app.get(ENDPOINT+"/quotes/:id", (req, res) => {
+    console.log("...is a GET message");
+
+    let sql =    "SELECT q.id, first_name, last_name, phone, email, street_number, city, province, country, postal "
+                +"FROM customer c, address a, quote q "
+                +"WHERE q.address_id=a.id && a.customer_id=c.id && q.id="+req.params.id;
+
+    con.query(sql, function (err, result) {
+        if (err) {console.log(err);}
+
+        let quoteObj = {};
+        quoteObj = result[0];
+        quoteObj.line_items = new Array();
+
+        sql =    "SELECT title, description, quantity, price "
+                +"FROM line_item li, quote q "
+                +"WHERE li.quote_id=q.id && q.id="+req.params.id;
+        
+        con.query(sql, function (err, result) {
+            if (err) {console.log(err);}
+
+            quoteObj.line_items = result;
+            let messageStr = JSON.stringify(quoteObj);
+            console.log("Sending Object: "+messageStr);
+
+            res.end(messageStr);
+        });
+
+        
+    });
+});
+
 
 //PUT METHODS-------------------
 app.put("*", (req, res) => {

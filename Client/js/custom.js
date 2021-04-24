@@ -6,6 +6,58 @@ if (window.location.host == "localhost") {
     SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
 }
 
+function loadQuoteForEditing(quote_id, display_div, template_div, line_item_div) {
+    areaLoading(display_div);
+
+    retrieveQuote(quote_id)
+    .then (function(resolveText) {
+        let qObject = JSON.parse(resolveText);
+        displayQuoteForEditing(qObject, display_div, template_div, line_item_div)
+        .then( function() {
+            areaLoaded(display_div);
+        });
+    }, function(errorText) {
+        var t = document.createTextNode(errorText);
+        display_div.appendChild(t); 
+        areaLoaded(display_div);
+    });
+}
+
+function retrieveQuote(quote_id) {
+    return new Promise (function(resolve, reject) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                resolve(xmlHttp.responseText);
+            } else if (xmlHttp.status >= 300) {
+                reject("Could Not Retrieve Quote Information");
+            } else if (xmlHttp.readyState == 4 && xmlHttp.status == 0){
+                reject("Could Not Connect to Server");
+            }
+        }
+        xmlHttp.open("GET", SERVER+"/quotes/"+quote_id, true);
+        xmlHttp.send("");
+    });
+}
+
+function displayQuoteForEditing(qObject, display_div, template_div, line_item_div) {
+    return new Promise (function(resolve) {
+        let displayStr = "";
+
+        displayStr = render(template_div.innerHTML, qObject);
+        display_div.insertAdjacentHTML('beforeend', displayStr);
+
+        for (i=0; i<qObject.line_items.length; i++){
+
+            displayStr = render(line_item_div.innerHTML, qObject.line_items[i]);
+            display_div.insertAdjacentHTML('beforeend', displayStr);
+        }
+
+        resolve();
+    });
+}
+
+
 function loadAllQuotes(display_div, template_div) {
     areaLoading(display_div);
 
@@ -13,7 +65,7 @@ function loadAllQuotes(display_div, template_div) {
     .then( function(resolveText) {
         let qObject = JSON.parse(resolveText);
         displayQuotes(qObject, display_div, template_div)
-        .then( function(resolveText) {
+        .then( function() {
             areaLoaded(display_div);
         });
     }, function(errorText) {
@@ -43,15 +95,14 @@ function retrieveAllQuotes(){
 function displayQuotes(qObject, display_div, template_div) {
     return new Promise (function(resolve) {
         let displayStr = "";
-        let templateData = {};
 
         for (i=0; i<qObject.length; i++){
 
             displayStr = render(template_div.innerHTML, qObject[i]);
-
             display_div.insertAdjacentHTML('beforeend', displayStr);
+            //Use Curry Function to bind values
+            document.getElementById('q'+qObject[i].id+'EditBtn').addEventListener("click", editQuote(qObject[i].id));
         }
-        display_div.classList.remove("template");
         resolve();
     });
 }
@@ -70,6 +121,13 @@ function render(template, fillData) {
     });
 
     return renderedData;
+}
+
+function editQuote(quote_no) {
+    //Curry function as it's invoked inside a loop's click listener
+    return function () {
+        window.location.href = "edit-quote.html?quote_id="+quote_no;
+    }
 }
 
 function areaLoading(obj){

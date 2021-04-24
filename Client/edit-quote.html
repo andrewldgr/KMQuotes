@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <title>Edit Quote</title>
+    <link rel="shortcut icon" href="./images/cropped-site-identity-32x32.png">  
+    
+    <!-- FontAwesome JS -->
+    <script defer src="./js/fontawesome.all.js"></script>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">   
+    
+    <!-- Custom CSS -->  
+    <link id="theme-style" rel="stylesheet" href="./css/styles.css">
+
+    <!--Custom JS-->
+    <script defer src="./js/custom.js"></script>
+    
+</head>
+<body>
+    
+    <header class="header">  
+            <div class="row align-center">
+                <div class="col-sm-1 col-md-3 d-none d-md-flex align-center">
+                    <a href="index.html"><img src="./images/KitchenMakeovers_MasterLogo_FullColour SMALL.png" alt="profile image" /></a>
+                </div>
+                <div class="col-md-6 col-7">
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-3 col-4">
+                    <a class="btn btn-primary btn-lg" href="search-quotes.html"><i class="fas fa-search"></i> Search</a>              
+                </div>
+            </div>
+    </header>
+
+    <div class="container sections-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <section class="section">
+                    <div class="section-inner shadow-sm rounded">
+                        <h2 class="heading">Edit Quote</h2>
+                        <hr />
+                        <div id="quoteDisplayDiv">
+
+                            <div id="editQuoteTemplate" class="template">
+                                <h2>Quote #%id%</h2>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-lg-6 col-12">
+                                        <h5>Customer Info</h5>
+                                        <div class="card bg-light col-12 d-inline-block">
+                                            <div class="card-body">
+                                                <h4 class="card-title">%first_name% %last_name%</h4>
+                                                <p class="card-text">%phone%</p>
+                                                <p class="card-text">%email%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <h5>Property Info</h5>
+                                        <div class="card bg-light col-12 d-inline-block">
+                                            <div class="card-body">
+                                                <p class="card-text">%street_number%</p>
+                                                <p class="card-text">%city%, %province%, %postal%</p>
+                                                <p class="card-text">%country%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5>Line Items</h5>
+                                <div id="lineItemDisplayDiv"></div>
+
+                            </div>
+
+                            <div id="editLineItemTemplate" class="template">
+                                <div class="card bg-light col-12 d-inline-block">
+                                    <div class="card-body">
+                                        <h4 class="card-title">%title%</h4>
+                                        <p class="card-text">%description%</p>
+                                        <p class="card-text">%quantity% X %price%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div> 
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Page Specific Script-->
+    <script type="text/javascript">
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let quote_id = urlParams.get('quote_id');
+            loadQuoteForEditing(quote_id,   document.getElementById("quoteDisplayDiv"),
+                                            document.getElementById("editQuoteTemplate"), 
+                                            document.getElementById("editLineItemTemplate"));
+        }
+    </script>
+
+</body>
+</html>
+
+
