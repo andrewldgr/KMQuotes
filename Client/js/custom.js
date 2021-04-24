@@ -47,12 +47,7 @@ function displayQuotes(qObject, display_div, template_div) {
 
         for (i=0; i<qObject.length; i++){
 
-            templateData = {
-                id: qObject[i].id,
-                customer_id: qObject[i].customer_id
-            };
-
-            displayStr = render(template_div.innerHTML, templateData);
+            displayStr = render(template_div.innerHTML, qObject[i]);
 
             display_div.insertAdjacentHTML('beforeend', displayStr);
         }
