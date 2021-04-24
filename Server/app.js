@@ -20,9 +20,9 @@ if(os.hostname().indexOf("local") > -1){
 
 const con = mysql.createConnection({
     host: "localhost",
-    user: "kmquotes_user",
+    user: "mandrewn_kmquotes_user",
     password: "hAppy$elling",
-    database: "kmquotes"
+    database: "mandrewn_kmquotes"
 });
 
 con.connect(function(err) {
@@ -63,7 +63,7 @@ function checkAIDExists(aID, i) {
 }
 
 //GET METHODS----------------
-app.get("/quotes", (req, res) => {
+app.get(ENDPOINT+"/quotes", (req, res) => {
     console.log("...is a GET message");
     //Values
     const q = url.parse(req.url, true);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 24, 2021 at 05:40 AM
+-- Generation Time: Apr 24, 2021 at 06:05 AM
 -- Server version: 8.0.22
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `kmquotes`
+-- Database: `mandrewn_kmquotes`
 --
 
 -- --------------------------------------------------------
@@ -35,7 +35,7 @@ CREATE TABLE `address` (
   `country` varchar(255) NOT NULL,
   `postal` varchar(255) NOT NULL,
   `customer_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `address`
@@ -58,7 +58,7 @@ CREATE TABLE `customer` (
   `last_name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `customer`
@@ -78,11 +78,11 @@ INSERT INTO `customer` (`id`, `first_name`, `last_name`, `phone`, `email`) VALUE
 CREATE TABLE `line_item` (
   `id` int NOT NULL,
   `quote_id` int NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `description` text NOT NULL,
   `quantity` float NOT NULL,
   `price` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `line_item`
@@ -105,7 +105,7 @@ INSERT INTO `line_item` (`id`, `quote_id`, `title`, `description`, `quantity`, `
 CREATE TABLE `quote` (
   `id` int NOT NULL,
   `customer_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `quote`
