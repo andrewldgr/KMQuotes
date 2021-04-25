@@ -6,6 +6,37 @@ if (window.location.host == "localhost") {
     SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
 }
 
+function deleteQuoteCurry(quote_id){
+    return function() {
+        areaLoading(this, "sm");
+
+        deleteQuote(quote_id)
+        .then( function(resolveText) {
+            window.location.href = "view-quotes.html";
+        }, function(errorText) {
+            areaLoaded(this);
+            alert(errorText);
+        });
+    }  
+}
+
+function deleteQuote(quote_id){
+    return new Promise (function(resolve, reject) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                resolve(xmlHttp.responseText);
+            } else if (xmlHttp.status >= 300) {
+                reject("Could Not Delete Quote");
+            } else if (xmlHttp.readyState == 4 && xmlHttp.status == 0){
+                reject("Could Not Connect to Server");
+            }
+        }
+        xmlHttp.open("DELETE", SERVER+"/quotes/"+quote_id, true);
+        xmlHttp.send("");
+    });
+}
+
 function addEmptyLineItem(displayDiv, template) {
 
         let liObject = {

@@ -407,7 +407,8 @@ app.post("*", (req, res) => {
     }); 
 });
 
-//DELETE METHOD----------------------
+//DELETE METHODS----------------------
+//Delete line item
 app.delete(ENDPOINT+"/line_items/:id", (req, res) => {
     console.log("...DELETE /line_items/{id}");
 
@@ -417,7 +418,23 @@ app.delete(ENDPOINT+"/line_items/:id", (req, res) => {
         console.log("Question deleted");
         res.end();
     });
+});
+//Delete entire quote + line items
+//(temporarily also customer and address too)
+app.delete(ENDPOINT+"/quotes/:id", (req, res) => {
+    console.log("...DELETE /quotes/{id}");
 
+    let sql =   "DELETE li, q, a, c FROM line_item li "
+                +"INNER JOIN quote q ON q.id=li.quote_id "
+                +"INNER JOIN address a ON a.id = q.address_id "
+                +"INNER JOIN customer c ON c.id = a.customer_id "
+                +"WHERE q.id = "+req.params.id+";";
+
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Quote Deleted");
+        res.end();
+    });
 });
 
 app.listen(8080, (err) => {

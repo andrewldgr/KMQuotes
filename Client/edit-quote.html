@@ -156,6 +156,8 @@
             document.getElementById("saveQuote").addEventListener("click", saveQuote());
             document.getElementById("addLineItemBtn").addEventListener("click", 
                 function() {addEmptyLineItem(document.getElementById("lineItemDisplayDiv"), document.getElementById("editLineItemTemplate"))});
+
+            document.getElementById("deleteQuoteBtn").addEventListener("click", deleteQuoteCurry(quote_id));
         }
     </script>
 
