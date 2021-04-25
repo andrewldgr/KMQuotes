@@ -195,7 +195,7 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
     
     let sql =    "SELECT q.id, c.first_name, c.last_name, li.cost "
                 +"FROM quote q, customer c, address a, "
-                +"    (SELECT quote_id, ROUND(SUM(price), 2) AS cost FROM line_item GROUP BY quote_id) li "
+                +"    (SELECT quote_id, ROUND(SUM(price*quantity), 2) AS cost FROM line_item GROUP BY quote_id) li "
                 +"WHERE q.address_id=a.id && li.quote_id=q.id && a.customer_id=c.id;";
 
     con.query(sql, function (err, result) {
@@ -425,9 +425,9 @@ app.delete(ENDPOINT+"/quotes/:id", (req, res) => {
     console.log("...DELETE /quotes/{id}");
 
     let sql =   "DELETE li, q, a, c FROM line_item li "
-                +"INNER JOIN quote q ON q.id=li.quote_id "
-                +"INNER JOIN address a ON a.id = q.address_id "
-                +"INNER JOIN customer c ON c.id = a.customer_id "
+                +"JOIN quote q ON q.id=li.quote_id "
+                +"JOIN address a ON a.id = q.address_id "
+                +"JOIN customer c ON c.id = a.customer_id "
                 +"WHERE q.id = "+req.params.id+";";
 
     con.query(sql, function (err, result) {

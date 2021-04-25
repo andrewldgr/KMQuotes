@@ -40,9 +40,11 @@
                 <section class="section">
                     <div class="section-inner shadow-sm rounded">
                         <a id="saveQuote" class="btn btn-outline-success float-right">Save Changes</a>
+                        <a id="cancelChangesBtn" class="btn btn-outline-secondary float-right">Cancel</a>
                         <h2 class="heading">Edit Quote</h2>
                         <hr />
-                        <div id="quoteDisplayDiv" class="template">
+                        <div id="quoteDisplayDiv">
+                        <div id="quoteTemplateDiv" class="template">
 
                             <h2>Quote #%quote_id%</h2>
                             <input type="hidden" name="quote_id" value="%quote_id%" />
@@ -135,6 +137,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div> 
                         <a id="deleteQuoteBtn" class="btn btn-bad float-right">Delete Quote</a>
                         <a id="addLineItemBtn" class="btn btn-info">Add Line Item</a>
@@ -151,8 +154,9 @@
             const urlParams = new URLSearchParams(window.location.search);
             let quote_id = urlParams.get('quote_id');
             loadQuote(quote_id, document.getElementById("quoteDisplayDiv"),
-                                document.getElementById("editLineItemTemplate"));
+                document.getElementById("quoteTemplateDiv"));
 
+            document.getElementById("cancelChangesBtn").addEventListener("click", viewQuoteCurry(quote_id));
             document.getElementById("saveQuote").addEventListener("click", saveQuote());
             document.getElementById("addLineItemBtn").addEventListener("click", 
                 function() {addEmptyLineItem(document.getElementById("lineItemDisplayDiv"), document.getElementById("editLineItemTemplate"))});

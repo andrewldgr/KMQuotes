@@ -55,7 +55,6 @@ function addEmptyLineItem(displayDiv, template) {
 
         var deleteBtnArr = document.querySelectorAll('[name="deleteLineItemBtn"]');
         if (deleteBtnArr.length > 0) {
-            console.log(deleteBtnArr.length);
             deleteBtn = deleteBtnArr[deleteBtnArr.length-1];
             deleteBtn.addEventListener("click", deleteLineItemCurry(liObject.line_item_id, new_div));
         }
@@ -128,13 +127,13 @@ function sendQuote(qObject) {
     });
 }
 
-function loadQuote(quote_id, display_div, line_item_template_div) {
+function loadQuote(quote_id, display_div, template_div) {
     areaLoading(display_div);
 
     retrieveQuote(quote_id)
     .then (function(resolveText) {
         let qObject = JSON.parse(resolveText);
-        displayQuote(qObject, display_div, line_item_template_div)
+        displayQuote(qObject, display_div, template_div)
         .then( function() {
             areaLoaded(display_div);
         });
@@ -162,7 +161,7 @@ function retrieveQuote(quote_id) {
     });
 }
 
-function displayQuote(qObject, display_div, line_item_template_div) {
+function displayQuote(qObject, display_div, template_div) {
     return new Promise (function(resolve) {
 
         qObject.quote_total = 0;
@@ -174,8 +173,11 @@ function displayQuote(qObject, display_div, line_item_template_div) {
         }
 
         //display the rest of the quote information
-        display_div.innerHTML = render(display_div.innerHTML, qObject);
-        display_div.classList.remove("template");
+        let new_div = document.createElement('div');
+        new_div.innerHTML = render(template_div.innerHTML, qObject);
+        display_div.appendChild(new_div);
+
+        template_div.remove();
 
         for (i=0; i<qObject.line_items.length; i++){
             //display the line items
@@ -196,7 +198,7 @@ function displayQuote(qObject, display_div, line_item_template_div) {
 function deleteLineItemCurry(line_item_id, div_to_delete) {
     return function() {
 
-        areaLoading(this);
+        areaLoading(this, "sm");
         deleteLineItem(line_item_id)
         .then( function(resolveText) {
             div_to_delete.remove();

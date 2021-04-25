@@ -43,7 +43,8 @@
                         <h2 class="heading">View Quote</h2>
                         
                         <hr />
-                        <div id="quoteDisplayDiv" class="template">
+                        <div id="quoteDisplayDiv">
+                        <div id="quoteTemplateDiv" class="template">
 
                             <h2>Quote #%quote_id%</h2>
                             <hr />
@@ -83,6 +84,7 @@
                                 </div>
                             </div>
                             <div class="card border-success mb-3 text-right font-weight-bold">Total: $%quote_total%</div>
+                        </div>
                         </div> 
                     </div>
                 </section>
@@ -97,7 +99,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let quote_id = urlParams.get('quote_id');
             loadQuote(quote_id, document.getElementById("quoteDisplayDiv"),
-                                document.getElementById("editLineItemTemplate"));
+                document.getElementById("quoteTemplateDiv"));
 
             document.getElementById("editQuote").addEventListener("click", editQuote(quote_id));
         }
