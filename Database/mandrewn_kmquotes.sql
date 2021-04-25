@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 24, 2021 at 06:05 AM
+-- Generation Time: Apr 25, 2021 at 08:24 PM
 -- Server version: 8.0.22
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `address`
 --
 
+DROP TABLE IF EXISTS `address`;
 CREATE TABLE `address` (
   `id` int NOT NULL,
   `street_number` varchar(255) NOT NULL,
@@ -42,9 +43,8 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`id`, `street_number`, `city`, `province`, `country`, `postal`, `customer_id`) VALUES
-(1, '1700 Salty Rd', 'Vancouver', 'BC', 'Canada', 'V2S 7R2', 1),
-(2, '111 Bayshore Dr.', 'Vancouver', 'BC', 'Canada', 'V1R 7C5', 2),
-(3, '123 Vedder Rd.', 'Chilliwack', 'BC', 'Canada', 'V2S 7R2', 3);
+(1, '1754 Salty Rd', 'Abbotsford', 'BC', 'Canada', 'V2S 7C5', 1),
+(2, '111 Bayshore Dr.', 'Vancouver', 'BC', 'Canada', 'V1R 7C5', 2);
 
 -- --------------------------------------------------------
 
@@ -52,6 +52,7 @@ INSERT INTO `address` (`id`, `street_number`, `city`, `province`, `country`, `po
 -- Table structure for table `customer`
 --
 
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `id` int NOT NULL,
   `first_name` varchar(255) NOT NULL,
@@ -65,9 +66,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `first_name`, `last_name`, `phone`, `email`) VALUES
-(1, 'Andrew', 'Ledger', '(555) 779-5004', 'andrewldgr@gmail.com'),
-(2, 'Katie', 'Ledger', '(604) 555-1234', 'katie.ledger@student.ufv.ca'),
-(3, 'John', 'Smith', '(778) 555-4435', 'john.smith@student.ufv.ca');
+(1, 'Andrew', 'Ledger', '(604) 555-1234', 'andrew.ledger@student.ufv.ca'),
+(2, 'Katie', 'Ledger', '(604) 555-1234', 'katie.ledger@student.ufv.ca');
 
 -- --------------------------------------------------------
 
@@ -75,6 +75,7 @@ INSERT INTO `customer` (`id`, `first_name`, `last_name`, `phone`, `email`) VALUE
 -- Table structure for table `line_item`
 --
 
+DROP TABLE IF EXISTS `line_item`;
 CREATE TABLE `line_item` (
   `id` int NOT NULL,
   `quote_id` int NOT NULL,
@@ -89,12 +90,10 @@ CREATE TABLE `line_item` (
 --
 
 INSERT INTO `line_item` (`id`, `quote_id`, `title`, `description`, `quantity`, `price`) VALUES
-(1, 1, 'Kitchen Refinishing', 'Kitchen cabinet doors (10), drawer faces (10), and shelves (2) will be un-installed, cleaned, sanded and refinished using a tinted lacquer, applied by a spray application in a stock colour at our facility. Total coating system will have a 4mil dry build. Kitchen cabinet frame will be cleaned, sanded, and refinished using a tinted lacquer, applied by a spray application in a stock colour in place. Total coating system will have a 4m dry build. Doors and drawers will be re-installed.', 1, 3724.56),
+(1, 1, 'Kitchen Refinishing | Poly', 'Kitchen cabinet doors (100), drawer faces (10), and shelves (2) will be un-installed, cleaned, sanded and refinished using a tinted lacquer, applied by a spray application in a stock colour at our facility. Total coating system will have a 4mil dry build. Kitchen cabinet frame will be cleaned, sanded, and refinished using a tinted lacquer, applied by a spray application in a stock colour in place. Total coating system will have a 4m dry build. Doors and drawers will be re-installed.', 1, 1000),
 (2, 1, 'Handles', 'Part# 9635-128-BNI', 25, 7),
-(3, 1, 'Hardware Installation', '$2 per handle to install', 25, 2),
 (4, 2, 'Kitchen Refinishing', 'Your entire kitchen will be painted', 1, 2344.52),
-(5, 3, 'Furniture', 'Furniture must be transported to shop, where we will refinish and spray it with paint', 1, 425.35),
-(6, 4, 'Bathroom Refinishing', 'Bathroom will be refinishing using a tinted polyurethane', 1, 390.83);
+(5, 3, 'Furniture', 'Furniture must be transported to shop, where we will refinish and spray it with paint', 1, 425.35);
 
 -- --------------------------------------------------------
 
@@ -102,20 +101,19 @@ INSERT INTO `line_item` (`id`, `quote_id`, `title`, `description`, `quantity`, `
 -- Table structure for table `quote`
 --
 
+DROP TABLE IF EXISTS `quote`;
 CREATE TABLE `quote` (
   `id` int NOT NULL,
-  `customer_id` int NOT NULL
+  `address_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `quote`
 --
 
-INSERT INTO `quote` (`id`, `customer_id`) VALUES
+INSERT INTO `quote` (`id`, `address_id`) VALUES
 (1, 1),
-(2, 2),
-(3, 1),
-(4, 3);
+(2, 2);
 
 --
 -- Indexes for dumped tables
@@ -153,25 +151,25 @@ ALTER TABLE `quote`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `line_item`
 --
 ALTER TABLE `line_item`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `quote`
 --
 ALTER TABLE `quote`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
