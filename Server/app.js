@@ -32,39 +32,166 @@ con.connect(function(err) {
 
 app.use(function(req, res, next) {
     console.log("Message Recieved");
+    res.header('content-type', 'application/json')
     res.header('Access-control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
 
-function checkAIDExists(aID, i) {
-    return new Promise (function(resolve, reject) {
-        //Check if the Answer ID exists
-        sql = "SELECT * FROM answers WHERE AID = '"+aID+"'";
+function checkQuoteExists(quote_id) {
+    return new Promise(function(resolve, reject) {
+
+        sql = "SELECT id FROM quote WHERE id = "+quote_id;
 
         con.query(sql, function (err, result) {
-            if (err) reject(err);
-            let qObj = [];
-            Object.keys(result).forEach(function(key) {
-                let row = result[key];
-                qObj.push({"aID": row.AID});
+            if (err) {console.log(err); reject(err);}
+            
+            if(result.length > 0) {
+                console.log("quote: "+quote_id+" exists!")
+                resolve(true);
+            } else {
+                console.log("quote: "+quote_id+" does not exist!")
+                resolve(false);
+            }
+        });
+    });
+}
+
+function insertOrUpdateQuote(qObject, exists) {
+    return new Promise(function(resolve, reject) {
+
+        if (exists == true) {
+
+            let sql = "UPDATE customer SET first_name = '"+qObject.first_name
+                +"', last_name = '"+qObject.last_name
+                +"', phone = '"+qObject.phone
+                +"', email = '"+qObject.email
+                +"' WHERE id = "+qObject.customer_id+";";
+
+            console.log(sql);
+
+            con.query(sql, function (err, result) {
+                if (err) {console.log(err); reject(err);}
+                console.log("customer #"+qObject.customer_id+" Updated");
+
+                sql = "UPDATE address SET street_number = '"+qObject.street_number
+                +"', city = '"+qObject.city
+                +"', province = '"+qObject.province
+                +"', postal = '"+qObject.postal
+                +"', country = '"+qObject.country
+                +"' WHERE id = "+qObject.address_id+";";
+
+                con.query(sql, function (err, result) {
+                    if (err) {console.log(err); reject(err);}
+                    console.log("address #"+qObject.address_id+" Updated");
+                    resolve(qObject.quote_id);
+                });
+            });        
+    
+        } else {
+            let sql = "INSERT INTO customer(first_name, last_name, phone, email) values ('"
+                +qObject.first_name+"', '"
+                +qObject.last_name+"', '"
+                +qObject.phone+"', '"
+                +qObject.email+"');"
+                +" INSERT INTO address(street_number, city, province, country, postal, customer_id) VALUES ('"
+                +qObject.street_number+"', '"
+                +qObject.city+"', '"
+                +qObject.province+"', '"
+                +qObject.country+"', '"
+                +qObject.postal+"', "
+                +"(SELECT LAST_INSERT_ID()));"
+                +" INSERT INTO quote(address_id) VALUES ((SELECT LAST_INSERT_ID()));"
+                +" SELECT LAST_INSERT_ID();";
+
+            con.query(sql, function (err, result) {
+                if (err) {console.log(err); reject(err);}
+                qObject.quote_id = result[0];
+                console.log("quote #"+qObject.quote_id+" Created");
+                resolve(qObject.quote_id);
             });
-            console.log(qObj['aID']);
-            console.log(JSON.stringify(qObj));
-            if(JSON.stringify(qObj) !== "[]") {
+        }
+    });
+}
+
+function checkLineItemExists(line_item_id, i) {
+    return new Promise (function(resolve, reject) {
+
+        sql = "SELECT id FROM line_item WHERE id = "+line_item_id;
+
+        con.query(sql, function (err, result) {
+            if (err) {console.log(err); reject(err);}
+            
+            if(result.length > 0) {
+                console.log("line item: "+line_item_id+" exists!")
                 resolve([true, i]);
             } else {
+                console.log("line item: "+line_item_id+" does not exist!")
                 resolve([false, i]);
             }
+        });
+    });
+}
+
+function insertOrUpdateLineItem(liObject, result) {
+    return new Promise(function(resolve, reject) {
+
+        if (result == true) {
+    
+            let sql = "UPDATE line_item SET quote_id = "+liObject.quote_id
+            +", title = '"+liObject.title
+            +"', description = '"+liObject.description
+            +"', quantity = "+liObject.quantity
+            +", price = "+liObject.price
+            +" WHERE id = "+liObject.line_item_id;
+
+            con.query(sql, function (err, result) {
+                if (err) reject(err);
+                console.log("1 line_item record updated.");
+                resolve(liObject.line_item_id);
+            });        
+    
+        } else {
+            let sql = "INSERT INTO line_item(quote_id, title, description, quantity, price) values ("
+                +liObject.quote_id+", '"
+                +liObject.title+"', '"
+                +liObject.description+"', '"
+                +liObject.quantity+"', "
+                +liObject.price+");";
+                
+
+            con.query(sql, function (err, result) {
+                if (err) {console.log(err); reject(err);}
+
+                sql = "SELECT LAST_INSERT_ID() AS id;";
+                con.query(sql, function (err, result) {
+                    if (err) {console.log(err); reject(err);}
+                    liObject.line_item_id = result[0].id;
+                    console.log("1 line_item record created with id: "+liObject.line_item_id);
+                    resolve(liObject.line_item_id);
+                });
+            });
+        }
+    });
+}
+
+function deleteOtherLineItems(line_item_list, quote_id) {
+    return new Promise(function(resolve, reject) {
+        sql = "DELETE FROM line_item WHERE quote_id = '"+quote_id+"' AND id NOT IN "+line_item_list;
+        con.query(sql, function (err, result) {
+            if (err) {console.log(err); reject(err);};
+            console.log("deleted old line items with result: "+JSON.stringify(result));
+            resolve(result);
         });
     });
     
 }
 
-//GET METHODS----------------
+//GET METHODS----------------------------------
+//GET all quotes
 app.get(ENDPOINT+"/quotes", (req, res) => {
-    console.log("...is a GET message");
+    console.log("...GET /quotes");
     
     let sql =    "SELECT q.id, c.first_name, c.last_name, li.cost "
                 +"FROM quote q, customer c, address a, "
@@ -83,33 +210,40 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
     });
 });
 
+//Get quote by ID
 app.get(ENDPOINT+"/quotes/:id", (req, res) => {
-    console.log("...is a GET message");
+    console.log("...GET /quotes/{id}");
 
-    let sql =    "SELECT q.id, first_name, last_name, phone, email, street_number, city, province, country, postal "
+    let sql =    "SELECT q.id AS quote_id, c.id AS customer_id, a.id AS address_id, first_name, last_name, phone, email, street_number, city, province, country, postal "
                 +"FROM customer c, address a, quote q "
                 +"WHERE q.address_id=a.id && a.customer_id=c.id && q.id="+req.params.id;
 
     con.query(sql, function (err, result) {
         if (err) {console.log(err);}
 
-        let quoteObj = {};
-        quoteObj = result[0];
-        quoteObj.line_items = new Array();
+        if (result.length > 0){
+            let quoteObj = {};
+            quoteObj = result[0];
+            quoteObj.line_items = new Array();
 
-        sql =    "SELECT title, description, quantity, price "
-                +"FROM line_item li, quote q "
-                +"WHERE li.quote_id=q.id && q.id="+req.params.id;
+            sql =    "SELECT li.id AS line_item_id, title, description, quantity, price "
+                    +"FROM line_item li, quote q "
+                    +"WHERE li.quote_id=q.id && q.id="+req.params.id;
+            
+            con.query(sql, function (err, result) {
+                if (err) {console.log(err);}
+
+                quoteObj.line_items = result;
+                let messageStr = JSON.stringify(quoteObj);
+                console.log("Sending Object: "+messageStr);
+
+                res.end(messageStr);
+            });
+        } else {
+            console.log("quote id does not exist!")
+            res.end("[]");
+        }
         
-        con.query(sql, function (err, result) {
-            if (err) {console.log(err);}
-
-            quoteObj.line_items = result;
-            let messageStr = JSON.stringify(quoteObj);
-            console.log("Sending Object: "+messageStr);
-
-            res.end(messageStr);
-        });
 
         
     });
@@ -117,8 +251,9 @@ app.get(ENDPOINT+"/quotes/:id", (req, res) => {
 
 
 //PUT METHODS-------------------
-app.put("*", (req, res) => {
-    console.log("...is a PUT message");
+//update a quote by id
+app.put(ENDPOINT+"/quotes/:id", (req, res) => {
+    console.log("...PUT /quotes/{id}");
 
     let body = '';
 
@@ -133,89 +268,68 @@ app.put("*", (req, res) => {
 
     req.on('end', function () {
         console.log("data recieved: "+body);
-        let post = JSON.parse(body);
+        let qObject = JSON.parse(body);
 
-        if (post['function'] == "UPDATEQ") {
-            console.log("UPDATEQ Message Recieved");
+        checkQuoteExists(qObject.quote_id)
+        .then( function(resolveText){
 
-            let sql = "UPDATE questions SET QText = '"+post['qtext']+"', CodeText = '"+post['codetext']+"' WHERE QID = '"+post['qid']+"'";
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("1 question record updated. qText = "+post['qtext']);
-                res.end();
-            });
-        }
+            insertOrUpdateQuote(qObject, resolveText)
+            .then( function(resolveText){
 
-        if (post['function'] == "UPDATEANS") {
-            console.log("UPDATEANS Message Recieved");
+                //Delete old line items
+                let line_item_id_list = "(";
+                for (i=0;i < qObject.line_items.length; i++) {
 
-            sql = "UPDATE answers SET QID = '"+post['qid']+"', AText = '"+post['atext']+"', IsCorrect = '"+post['iscorrect']+"' WHERE AID = '"+post['aid']+"'";
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("1 answer record updated. aText = "+post['atext']);
-            });
+                    //for processing in later promises
+                    qObject.line_items[i].quote_id = qObject.quote_id;
 
-            res.end();
-        }
-
-        if (post['function'] == "REPLACEANSWERS") {
-            console.log("REPLCEANSWERS Message Recieved:");
-
-            let aIDList = "(";
-            let sql = "";
-            for (i=0;i < post['aid'].length; i++) {
-
-                if (post['iscorrect'][i] != "true") {
-                    post['iscorrect'][i] = "false";
-                }
-
-                if (i > 0) {
-                    aIDList += ", ";
-                }
-                aIDList += post['aid'][i];
-
-                checkAIDExists(post['aid'][i], i)
-                .then( function(resolveText) {
-                    if (resolveText[0] == true) {
-                        console.log("aid exists!")
-                        sql = "UPDATE answers SET QID = '"+post['qid']+"', AText = '"+post['atext'][resolveText[1]]+"', IsCorrect = '"+post['iscorrect'][resolveText[1]]+"' WHERE AID = '"+post['aid'][resolveText[1]]+"'";
-                        console.log("qid: "+post['qid']);
-                        console.log("aid: "+post['aid'][resolveText[1]]);
-                        con.query(sql, function (err, result) {
-                            if (err) throw err;
-                            console.log("1 answer record updated.");
-                        });
+                    //Build a list of line items we are changing
+                    if (i == 0) {
+                        line_item_id_list += qObject.line_items[i].line_item_id;
                     } else {
-                        console.log("aid doesn't exist")
-                        sql = "INSERT INTO answers(QID, AText, IsCorrect) values ('"+post['qid']+"', '"+post['atext'][resolveText[1]]+"', '"+post['iscorrect'][resolveText[1]]+"')";
-                        con.query(sql, function (err, result) {
-                            if (err) throw err;
-                            console.log("1 answer record inserted.");
-                            res.end();
+                        line_item_id_list += ", "+qObject.line_items[i].line_item_id;
+                    }
+                }
+                line_item_id_list += ")";
+                deleteOtherLineItems(line_item_id_list, qObject.quote_id)
+                .then(function(resolveText) {
+
+                    let lineItemPromises = [];
+                    for (i=0;i < qObject.line_items.length; i++) {
+
+                        checkLineItemExists(qObject.line_items[i].line_item_id, i)
+                        .then( function(resolveText) {
+
+                            let result = resolveText[0];
+                            let i = resolveText[1];
+
+                            lineItemPromises[i] = insertOrUpdateLineItem(qObject.line_items[i], result)
+                            .then( function(resolveText) {
+                                
+                            }, function(errorText) {
+
+                            });
+                        }, function(errorText) {
+
                         });
                     }
-                    
+
+                    //end communication once all line items finished.
+                    Promise.all(lineItemPromises)
+                    .then ( function(resolveText) {
+                        res.end(qObject.quote_id);
+                    }, function(errorText) {
+
+                    });
                 }, function(errorText) {
-                    console.log(errorText);
+
                 });
+            }, function(errorText){
 
-                
-            }
-            aIDList += ")";
-
-            console.log(aIDList);
-            //delete any answers associated with the questions, where we aren't updating them
-            //according to semantics, a PUT request should only replace the full list of answers,
-            //and not just the ones provided
-            sql = "DELETE FROM answers WHERE QID = "+post['qid']+" AND AID NOT IN "+aIDList;
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("Old Answers deleted");
             });
-            
+        }, function(errorText){
 
-            res.end();
-        }
+        });
     });
 });
 
@@ -294,43 +408,16 @@ app.post("*", (req, res) => {
 });
 
 //DELETE METHOD----------------------
-app.delete("*", (req, res) => {
-    console.log("...is a DELETE message");
+app.delete(ENDPOINT+"/line_items/:id", (req, res) => {
+    console.log("...DELETE /line_items/{id}");
 
-    let body = '';
-    req.on('data', function (data) {
-        console.log("...recieved some data");
-        body += data;
-
-        // Too much PUT data, kill the connection!
-        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-        if (body.length > 1e6)
-            req.socket.destroy();
+    let sql = "DELETE FROM line_item WHERE id = "+req.params.id;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Question deleted");
+        res.end();
     });
 
-    req.on('end', function () {
-        console.log("...message ending");
-        let post = JSON.parse(body);
-
-        //const q = url.parse(req.url, true);
-
-        if (post['function'] == "DELETEQ") {
-            console.log("DELETQ Message Recieved");
-
-            let sql = "DELETE FROM questions WHERE QID = "+post['qid'];
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("Question deleted");
-            });
-
-            sql = "DELETE FROM answers WHERE QID = "+post['qid'];
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("Answers deleted");
-            });
-            res.end();
-        }
-    });
 });
 
 app.listen(8080, (err) => {
