@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <title>Edit Quote</title>
+    <link rel="shortcut icon" href="./images/cropped-site-identity-32x32.png">  
+    
+    <!-- FontAwesome JS -->
+    <script defer src="./js/fontawesome.all.js"></script>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">   
+    
+    <!-- Custom CSS -->  
+    <link id="theme-style" rel="stylesheet" href="./css/styles.css">
+
+    <!--Custom JS-->
+    <script defer src="./js/custom.js"></script>
+    
+</head>
+<body>
+    
+    <header class="header">  
+            <div class="row align-center">
+                <div class="col-sm-1 col-md-3 d-none d-md-flex align-center">
+                    <a href="index.html"><img src="./images/KitchenMakeovers_MasterLogo_FullColour SMALL.png" alt="profile image" /></a>
+                </div>
+                <div class="col-md-6 col-7">
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="col-md-3 col-4">
+                    <a class="btn btn-primary btn-lg" href="search-quotes.html"><i class="fas fa-search"></i> Search</a>              
+                </div>
+            </div>
+    </header>
+
+    <div class="container sections-wrapper">
+        <div class="row">
+            <div class="col-12">
+                <section class="section">
+                    <div class="section-inner shadow-sm rounded">
+                        <a id="saveQuote" class="btn btn-outline-success float-right">Save Changes</a>
+                        <a id="cancelChangesBtn" class="btn btn-outline-secondary float-right">Cancel</a>
+                        <h2 class="heading">Edit Quote</h2>
+                        <hr />
+                        <div id="quoteDisplayDiv">
+                        <div id="quoteTemplateDiv" class="template">
+
+                            <h2>New Quote</h2>
+                            <input type="hidden" name="quote_id" value="%quote_id%" />
+                            <input type="hidden" name="address_id" value="%address_id%" >
+                            <input type="hidden" name="customer_id" value="%customer_id%" >
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-6 col-12">
+                                    <h5>Customer Info</h5>
+                                    <div class="card bg-light col-12 d-inline-block">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <small>First Name</small>
+                                                <input type="text" class="form-control" name="first_name" value="%first_name%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Last Name</small>
+                                                <input type="text" class="form-control" name="last_name" value="%last_name%" />
+                                            </div>
+                                            <div class="for-group">
+                                                <small>Phone#</small>
+                                                <input type="text" class="form-control" name="phone" value="%phone%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Email</small>
+                                                <input type="text" class="form-control" name="email" value="%email%" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <h5>Property Info</h5>
+                                    <div class="card bg-light col-12 d-inline-block">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <small>Street</small>
+                                                <input type="text" class="form-control" name="street_number" value="%street_number%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>City</small>
+                                                <input type="text" class="form-control" name="city" value="%city%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Province</small>
+                                                <input type="text" class="form-control" name="province" value="%province%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Postal Code</small>
+                                                <input type="text" class="form-control" name="postal" value="%postal%" />
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Country</small>
+                                                <input type="text" class="form-control" name="country" value="%country%" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5>Line Items</h5>
+                            <div id="lineItemDisplayDiv">
+                                <div id="editLineItemTemplate" class="template">
+                                    <div class="card bg-light col-12 d-inline-block">
+                                        <div class="card-body">
+                                            <input type="hidden" name="line_item_id" value="%line_item_id%" />
+                                            <div class="form-group">
+                                                <small>Title</small>
+                                                <input type="text" name="title" value="%title%" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Description</small>
+                                                <textarea class="card-text col-12 form-control" name="description" rows="4">%description%</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Quantity</small>
+                                                <input type="text" name="quantity" value="%quantity%" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <small>Price</small>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">$</div>
+                                                    </div>
+                                                    <input type="text" name="price" value="%price%" class="form-control">
+                                                </div>
+                                            </div>
+                                            <a id="deleteLineItem%line_item_id%Btn" name="deleteLineItemBtn" class="btn btn-outline-warning float-right">Delete Line Item</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div> 
+                        <a id="addLineItemBtn" class="btn btn-info">Add Line Item</a>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Page Specific Script-->
+    <script type="text/javascript">
+        window.onload = function() {
+            loadQuote(0, document.getElementById("quoteDisplayDiv"),
+                document.getElementById("quoteTemplateDiv"));
+
+            document.getElementById("cancelChangesBtn").addEventListener("click", function() {viewAllQuotes()});
+            document.getElementById("saveQuote").addEventListener("click", saveQuote());
+            document.getElementById("addLineItemBtn").addEventListener("click", 
+                function() {addEmptyLineItem(document.getElementById("lineItemDisplayDiv"), document.getElementById("editLineItemTemplate"))});
+        }
+    </script>
+
+</body>
+</html>
+
+
