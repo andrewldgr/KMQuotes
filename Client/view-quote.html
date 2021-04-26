@@ -40,6 +40,7 @@
                 <section class="section">
                     <div class="section-inner shadow-sm rounded">
                         <a id="editQuote" class="btn btn-outline-info float-right">Edit This Quote</a>
+                        <a id="allQuotesBtn" class="btn btn-outline-secondary float-right">Back</a>
                         <h2 class="heading">View Quote</h2>
                         
                         <hr />
@@ -102,6 +103,7 @@
                 document.getElementById("quoteTemplateDiv"));
 
             document.getElementById("editQuote").addEventListener("click", editQuote(quote_id));
+            document.getElementById("allQuotesBtn").addEventListener("click", function() {viewAllQuotes();});
         }
         
     </script>
