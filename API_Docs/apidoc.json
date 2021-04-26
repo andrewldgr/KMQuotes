@@ -11,15 +11,15 @@ info:
 servers:
 - url: https://mandrewnator.com/group-project/api/v2
 tags:
-- name: quotes
+- name: Quotes
   description: Everything about current quotes
-- name: login
+- name: Authentication
   description: Access to the Quotes Admin Page
 paths:
   /quotes:
     post:
       tags:
-      - quotes
+      - Quotes
       summary: Add a new quote to the database
       operationId: addQuote
       requestBody:
@@ -35,7 +35,7 @@ paths:
           content: {}
     get:
       tags:
-      - quotes
+      - Quotes
       summary: Returns all quotes
       description: Returns all quotes, sorted by quoteID
       operationId: getQuote
@@ -55,7 +55,7 @@ paths:
   /quotes/{quoteID}:
     get:
       tags:
-      - quotes
+      - Quotes
       summary: Find quote by ID
       description: Returns a single quote
       operationId: getQuoteById
@@ -84,7 +84,7 @@ paths:
       - api_key: []
     delete:
       tags:
-      - quotes
+      - Quotes
       summary: Deletes a quote
       operationId: deleteQuote
       parameters:
@@ -108,7 +108,7 @@ paths:
           content: {}
     put:
       tags:
-      - quotes
+      - Quotes
       summary: Updated quote
       description: Update a quote with the specified ID
       operationId: updateQuote
@@ -134,10 +134,10 @@ paths:
           description: User not found
           content: {}
       
-  /quotes/search/{search-terms}:
+  /search/{search-terms}:
     get:
       tags:
-      - quotes
+      - Search
       summary: Find quote that has any content matching search terms
       description: Returns a list of quotes
       operationId: getQuoteByTerm
@@ -168,7 +168,7 @@ paths:
   /login:
     post:
       tags:
-      - login
+      - Authentication
       summary: Logs user into the system
       operationId: loginUser
       parameters:
@@ -199,15 +199,89 @@ paths:
                 type: string
                 format: date-time
           content:
-            application/xml:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
         400:
           description: Invalid username/password supplied
           content: {}
+          
+          
+  /logout:
+    get:
+      tags:
+      - Authentication
+      summary: Logs user out of the system
+      operationId: logoutUser
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          headers: {}
+          content:
+            application/json:
+              schema: 
+                type: object
+                example: {logout: true}
+        400:
+          description: Body must be empty
+          content: {}
+          
+          
+          
+  /line_items:
+    delete:
+      tags:
+      - Quotes
+      summary: delete a line item
+      operationId: logoutUser
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          headers: {}
+          content:
+            application/json:
+              schema: 
+                type: object
+                example: {}
+        400:
+          description: Body must be empty
+          content: {}
+          
+          
+  /admin:
+    get:
+      tags:
+      - Authentication
+      summary: Retrieved administration information
+      operationId: getAdminInfo
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          headers: {}
+          content:
+            application/json:
+              schema: 
+                type: object
+                example: {
+              get_quotes: {method: "GET", endpoint: "/quotes", quantity: 0},
+              get_quote_id: {method: "GET", endpoint: "/quotes/{id}", quantity: 0},
+              get_admin: {method: "GET", endpoint: "/admin", quantity: 0},
+              put_quote_id: {method: "PUT", endpoint: "/quotes/{id}", quantity: 0},
+              post_login: {method: "POST", endpoint: "/login", quantity: 0},
+              post_quotes: {method: "POST", endpoint: "/quotes", quantity: 0},
+              delete_line_item_id: {method: "DELETE", endpoint: "/line_items/{id}", quantity: 0},
+              delete_quote_id: {method: "DELETE", endpoint: "/quotes/{id}", quantity: 0},
+              get_logout: {method: "GET", endpoint: "/logout", quantity: 0},
+              get_quotes_search: {method: "GET", endpoint: "/search/{q}", quantity: 0}
+          }
+        400:
+          description: Body must be empty
+          content: {}
+          
+          
 components:
   schemas:
     quote:
