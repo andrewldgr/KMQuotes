@@ -69,8 +69,6 @@ function insertOrUpdateQuote(qObject, exists) {
                 +"', email = '"+qObject.email
                 +"' WHERE id = "+qObject.customer_id+";";
 
-            console.log(sql);
-
             con.query(sql, function (err, result) {
                 if (err) {console.log(err); reject(err);}
                 console.log("customer #"+qObject.customer_id+" Updated");
@@ -94,22 +92,40 @@ function insertOrUpdateQuote(qObject, exists) {
                 +qObject.first_name+"', '"
                 +qObject.last_name+"', '"
                 +qObject.phone+"', '"
-                +qObject.email+"');"
-                +" INSERT INTO address(street_number, city, province, country, postal, customer_id) VALUES ('"
-                +qObject.street_number+"', '"
-                +qObject.city+"', '"
-                +qObject.province+"', '"
-                +qObject.country+"', '"
-                +qObject.postal+"', "
-                +"(SELECT LAST_INSERT_ID()));"
-                +" INSERT INTO quote(address_id) VALUES ((SELECT LAST_INSERT_ID()));"
-                +" SELECT LAST_INSERT_ID();";
+                +qObject.email+"');";
 
             con.query(sql, function (err, result) {
                 if (err) {console.log(err); reject(err);}
-                qObject.quote_id = result[0];
-                console.log("quote #"+qObject.quote_id+" Created");
-                resolve(qObject.quote_id);
+
+                sql = "INSERT INTO address(street_number, city, province, country, postal, customer_id) VALUES ('"
+                    +qObject.street_number+"', '"
+                    +qObject.city+"', '"
+                    +qObject.province+"', '"
+                    +qObject.country+"', '"
+                    +qObject.postal+"', "
+                    +"(SELECT LAST_INSERT_ID()));";
+
+                con.query(sql, function (err, result) {
+                    if (err) {console.log(err); reject(err);}
+
+                    sql = "INSERT INTO quote(address_id) VALUES ((SELECT LAST_INSERT_ID()));"
+
+                    con.query(sql, function (err, result) {
+                        if (err) {console.log(err); reject(err);}
+
+                        sql = "SELECT LAST_INSERT_ID() AS id;";
+
+                        con.query(sql, function (err, result) {
+                            if (err) {console.log(err); reject(err);}
+
+                            if (result.length > 0) {
+                                qObject.quote_id = result[0].id;
+                                console.log("quote #"+qObject.quote_id+" Created");
+                                resolve(qObject.quote_id);
+                            }
+                        });
+                    });
+                });
             });
         }
     });
@@ -241,11 +257,8 @@ app.get(ENDPOINT+"/quotes/:id", (req, res) => {
             });
         } else {
             console.log("quote id does not exist!")
-            res.end("[]");
+            res.status(400).end("Quote id does not exist.");
         }
-        
-
-        
     });
 });
 
@@ -317,7 +330,7 @@ app.put(ENDPOINT+"/quotes/:id", (req, res) => {
                     //end communication once all line items finished.
                     Promise.all(lineItemPromises)
                     .then ( function(resolveText) {
-                        res.end(qObject.quote_id);
+                        res.end(JSON.stringify(qObject.quote_id));
                     }, function(errorText) {
 
                     });
@@ -325,7 +338,8 @@ app.put(ENDPOINT+"/quotes/:id", (req, res) => {
 
                 });
             }, function(errorText){
-
+                console.log("Unable to insert or update quote");
+                res.status(400).end(errorText);
             });
         }, function(errorText){
 

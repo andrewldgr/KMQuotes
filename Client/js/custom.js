@@ -102,7 +102,7 @@ function saveQuote() {
 
         sendQuote(qObject)
         .then (function(resolveText) {
-            viewQuote(resolveText);
+            viewQuote(JSON.parse(resolveText));
         }, function(errorText) {
 
         });
@@ -130,18 +130,53 @@ function sendQuote(qObject) {
 function loadQuote(quote_id, display_div, template_div) {
     areaLoading(display_div);
 
-    retrieveQuote(quote_id)
-    .then (function(resolveText) {
-        let qObject = JSON.parse(resolveText);
+    if (quote_id > 0) {
+        retrieveQuote(quote_id)
+        .then (function(resolveText) {
+            let qObject = JSON.parse(resolveText);
+            displayQuote(qObject, display_div, template_div)
+            .then( function() {
+                areaLoaded(display_div);
+            });
+        }, function(errorText) {
+            var t = document.createTextNode(errorText);
+            display_div.appendChild(t); 
+            areaLoaded(display_div);
+        });
+    } else {    //create a new quote
+        //create a dummy object
+        qObject = createEmptyQuoteObject();
+
         displayQuote(qObject, display_div, template_div)
         .then( function() {
             areaLoaded(display_div);
         });
-    }, function(errorText) {
-        var t = document.createTextNode(errorText);
-        display_div.appendChild(t); 
-        areaLoaded(display_div);
-    });
+    }
+}
+
+function createEmptyQuoteObject() {
+    qObject = {
+        quote_id: 0,
+        customer_id: 0,
+        address_id: 0,
+        first_name: "",
+        last_name: "",
+        phone: "",
+        email: "",
+        street_number: "",
+        city: "",
+        province: "",
+        postal: "",
+        country: "",
+        line_items: [{
+            line_item_id: 0,
+            title: "",
+            description: "",
+            quantity: 1,
+            price: 0
+        }]
+    }
+    return qObject;
 }
 
 function retrieveQuote(quote_id) {
@@ -150,8 +185,9 @@ function retrieveQuote(quote_id) {
         xmlHttp.onreadystatechange = function() {
             if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
                 resolve(xmlHttp.responseText);
-            } else if (xmlHttp.status >= 300) {
-                reject("Could Not Retrieve Quote Information");
+            } else if (xmlHttp.readyState == 4 && xmlHttp.status >= 300) {
+                console.log("Ready State: "+xmlHttp.readyState + ", Status: "+ xmlHttp.status + ", message: " + xmlHttp.responseText);
+                reject(xmlHttp.responseText);
             } else if (xmlHttp.readyState == 4 && xmlHttp.status == 0){
                 reject("Could Not Connect to Server");
             }
@@ -301,6 +337,10 @@ function editQuote(quote_id) {
 
 function viewQuote(quote_id) {
     window.location.href = "view-quote.html?quote_id="+quote_id;
+}
+
+function viewAllQuotes(){
+    window.location.href = "view-quotes.html";
 }
 
 function viewQuoteCurry(quote_id) {
