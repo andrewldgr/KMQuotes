@@ -13,6 +13,9 @@
     
     <!-- Custom CSS -->  
     <link id="theme-style" rel="stylesheet" href="./css/styles.css">
+
+    <!--Custom JS-->
+    <script defer src="./js/custom.js"></script>
     
 </head>
 <body>
@@ -36,7 +39,24 @@
             <div class="col-12">
                 <section class="section">
                     <div class="section-inner shadow-sm rounded text-center">
+                        <a id="logoutBtn" class="btn btn-outline-warning float-right">Logout</a>
                         <h2>Admin Page</h2>
+                        <hr />
+
+                        <div id="displayDiv" class="text-center">
+                            
+                            <div id="templateDiv" class="template">
+                            <div class="card bg-light col-sm-12 col-md-12 col-lg-5 col-xl-3 d-inline-block">
+                                <div class="card-body">
+                                    <h4 class="card-title">%method%</h4>
+                                    <p class="card-text">%endpoint%</p>
+                                    <p class="card-text">Requests: %quantity%</p>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div> 
+
                     </div>
                 </section>
             </div>
@@ -44,6 +64,12 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+        window.onload = function(){
+            loadAdminData(document.getElementById("displayDiv"), document.getElementById("templateDiv"));
+            document.getElementById("logoutBtn").addEventListener("click", logout());
+        }
+    </script>
 
 </body>
 </html>

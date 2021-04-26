@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 const router = express.Router();
 const app = express();
 app.use(session({
-	secret: 'secret',
-	resave: true,
+	secret: 'secrets',
+	resave: false,
 	saveUninitialized: true
 }));
 app.use(bodyParser.urlencoded({extended : true}));
@@ -17,6 +17,19 @@ app.use(bodyParser.json());
 const os = require('os');
 
 var ENDPOINT;
+let endpoint_counts = {
+    get_quotes: {method: "GET", endpoint: "/quotes", quantity: 0},
+    get_quote_id: {method: "GET", endpoint: "/quotes/{id}", quantity: 0},
+    get_admin: {method: "GET", endpoint: "/admin", quantity: 0},
+    put_quote_id: {method: "PUT", endpoint: "/quotes/{id}", quantity: 0},
+    post_login: {method: "POST", endpoint: "/login", quantity: 0},
+    post_quotes: {method: "POST", endpoint: "/quotes", quantity: 0},
+    delete_line_item_id: {method: "DELETE", endpoint: "/line_items/{id}", quantity: 0},
+    delete_quote_id: {method: "DELETE", endpoint: "/quotes/{id}", quantity: 0},
+    get_logout: {method: "GET", endpoint: "/logout", quantity: 0}
+};
+
+let totally_insecure_session = {};
 
 //We don't have to change endpoint address manually for deployment
 if(os.hostname().indexOf("local") > -1){
@@ -203,12 +216,16 @@ function insertOrUpdateLineItem(liObject, result) {
 
 function deleteOtherLineItems(line_item_list, quote_id) {
     return new Promise(function(resolve, reject) {
-        sql = "DELETE FROM line_item WHERE quote_id = '"+quote_id+"' AND id NOT IN "+line_item_list;
-        con.query(sql, function (err, result) {
+        if (line_item_list == "()") {
+            resolve(undefined);
+        } else {
+            sql = "DELETE FROM line_item WHERE quote_id = '"+quote_id+"' AND id NOT IN "+line_item_list;
+            con.query(sql, function (err, result) {
             if (err) {console.log(err); reject(err);};
             console.log("deleted old line items with result: "+JSON.stringify(result));
             resolve(result);
         });
+        }
     });
     
 }
@@ -217,27 +234,43 @@ function deleteOtherLineItems(line_item_list, quote_id) {
 //GET all quotes
 app.get(ENDPOINT+"/quotes", (req, res) => {
     console.log("...GET /quotes");
+    endpoint_counts.get_quotes.quantity += 1;
     
-    let sql =    "SELECT q.id, c.first_name, c.last_name, li.cost "
-                +"FROM quote q, customer c, address a, "
-                +"    (SELECT quote_id, ROUND(SUM(price*quantity), 2) AS cost FROM line_item GROUP BY quote_id) li "
-                +"WHERE q.address_id=a.id && li.quote_id=q.id && a.customer_id=c.id;";
+    let sql =    "SELECT q.id, c.first_name, c.last_name "
+                +"FROM quote q, customer c, address a "
+                +"WHERE q.address_id=a.id && a.customer_id=c.id;";
 
     con.query(sql, function (err, result) {
         if (err) {
             console.log(err);
         }
+        let qArr = result;
+        sql = "SELECT quote_id, ROUND(SUM(price*quantity), 2) AS cost FROM line_item GROUP BY quote_id;";
+        con.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
 
-        let messageStr = JSON.stringify(result);
-        console.log("Sending Object: "+messageStr);
+            for (i=0; i < qArr.length; i++) {
+                qArr[i].cost = 0;
+                for (j=0; j < result.length; j++) {
+                    if (qArr[i].id == result[j].quote_id) {
+                        qArr[i].cost = result[j].cost;
+                    }
+                }
+            }
+            let messageStr = JSON.stringify(qArr);
+            console.log("Sending Object: "+messageStr);
 
-        res.end(messageStr);
+            res.end(messageStr);
+        });
     });
 });
 
 //Get quote by ID
 app.get(ENDPOINT+"/quotes/:id", (req, res) => {
     console.log("...GET /quotes/{id}");
+    endpoint_counts.get_quote_id.quantity += 1;
 
     let sql =    "SELECT q.id AS quote_id, c.id AS customer_id, a.id AS address_id, first_name, last_name, phone, email, street_number, city, province, country, postal "
                 +"FROM customer c, address a, quote q "
@@ -271,20 +304,166 @@ app.get(ENDPOINT+"/quotes/:id", (req, res) => {
     });
 });
 
+//log out
+app.get(ENDPOINT+'/logout', function (req, res) {
+    endpoint_counts.get_logout.quantity += 1;
+
+    totally_insecure_session.loggedin = false;
+    console.log("logged out!");
+    res.send("logout success!");
+    res.end();
+});
+
 //Get admin stuff
-app.get('/admin', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.username + '!');
-	} else {
-		response.send('Please login to view this page!');
-	}
-	response.end();
+app.get(ENDPOINT+'/admin', function(req, res) {
+    console.log("...GET /admin");
+    endpoint_counts.get_admin.quantity += 1;
+
+    if (totally_insecure_session.loggedin == true) {
+        res.send(JSON.stringify(endpoint_counts));
+        res.end();
+    } else {
+        console.log("tried to view restricted content without authentication");
+        res.status(401).end("You must be loggen in to view this content!");
+    }
+    
+
+});
+
+//POST METHODS------------------
+//logging in
+app.post(ENDPOINT+"/login", function(req, res) {
+    console.log("...POST /login");
+    endpoint_counts.post_login.quantity += 1;
+
+    let body = '';
+
+    req.on('data', function (data) {
+        body += data;
+
+        // Too much POST data, kill the connection!
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+        if (body.length > 1e6)
+            req.socket.destroy();
+    });
+
+    req.on('end', function () {
+        loginObject = JSON.parse(body);
+
+        var username = loginObject.username;
+        var password = loginObject.password;
+        if (username && password) {
+            con.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
+                if (err) {console.log(err); reject(err);}
+                if (results.length > 0) {
+                    console.log("logged in successfully!");
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    req.session.save();
+                    totally_insecure_session = req.session;
+                    res.send(username);
+                    res.end();
+                } else {
+                    console.log("Invalid Credentials Recieved");
+                    res.status(401).end("Invalid Username or Password");
+                }			
+            });
+        } else {
+            console.log("Username / Password not recieved");
+            res.status(400).end("Please Enter a Username and Password");
+        }
+    }); 
+});
+
+//creating new quote
+app.post(ENDPOINT+"/quotes", (req, res) => {
+    console.log("...is a POST message");
+    endpoint_counts.post_quotes.quantity += 1;
+
+    let body = '';
+
+    req.on('data', function (data) {
+        body += data;
+
+        // Too much POST data, kill the connection!
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+        if (body.length > 1e6)
+            req.socket.destroy();
+    });
+
+    req.on('end', function () {
+        console.log("data recieved: "+body);
+        let qObject = JSON.parse(body);
+
+        checkQuoteExists(qObject.quote_id)
+        .then( function(resolveText){
+
+            insertOrUpdateQuote(qObject, resolveText)
+            .then( function(resolveText){
+
+                //Delete old line items
+                let line_item_id_list = "(";
+                for (i=0;i < qObject.line_items.length; i++) {
+
+                    //for processing in later promises
+                    qObject.line_items[i].quote_id = qObject.quote_id;
+
+                    //Build a list of line items we are changing
+                    if (i == 0) {
+                        line_item_id_list += qObject.line_items[i].line_item_id;
+                    } else {
+                        line_item_id_list += ", "+qObject.line_items[i].line_item_id;
+                    }
+                }
+                line_item_id_list += ")";
+                deleteOtherLineItems(line_item_id_list, qObject.quote_id)
+                .then(function(resolveText) {
+
+                    let lineItemPromises = [];
+                    for (i=0;i < qObject.line_items.length; i++) {
+
+                        checkLineItemExists(qObject.line_items[i].line_item_id, i)
+                        .then( function(resolveText) {
+
+                            let result = resolveText[0];
+                            let i = resolveText[1];
+
+                            lineItemPromises[i] = insertOrUpdateLineItem(qObject.line_items[i], result)
+                            .then( function(resolveText) {
+                                
+                            }, function(errorText) {
+
+                            });
+                        }, function(errorText) {
+
+                        });
+                    }
+
+                    //end communication once all line items finished.
+                    Promise.all(lineItemPromises)
+                    .then ( function(resolveText) {
+                        res.end(JSON.stringify(qObject.quote_id));
+                    }, function(errorText) {
+
+                    });
+                }, function(errorText) {
+
+                });
+            }, function(errorText){
+                console.log("Unable to insert or update quote");
+                res.status(400).end(errorText);
+            });
+        }, function(errorText){
+
+        });
+    }); 
 });
 
 //PUT METHODS-------------------
 //update a quote by id
 app.put(ENDPOINT+"/quotes/:id", (req, res) => {
     console.log("...PUT /quotes/{id}");
+    endpoint_counts.put_quote_id.quantity += 1;
 
     let body = '';
 
@@ -365,78 +544,16 @@ app.put(ENDPOINT+"/quotes/:id", (req, res) => {
     });
 });
 
-//POST METHODS------------------
-app.post("/neverused", (req, res) => {
-    console.log("...is a POST message");
-    let body = '';
-
-    req.on('data', function (data) {
-        body += data;
-
-        // Too much POST data, kill the connection!
-        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-        if (body.length > 1e6)
-            req.socket.destroy();
-    });
-
-    req.on('end', function () {
-
-    }); 
-});
-
-//logging in
-app.post(ENDPOINT+"/login", function(req, res) {
-
-    console.log("...POST /login");
-    let body = '';
-
-    req.on('data', function (data) {
-        body += data;
-
-        // Too much POST data, kill the connection!
-        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-        if (body.length > 1e6)
-            req.socket.destroy();
-    });
-
-    req.on('end', function () {
-        loginObject = JSON.parse(body);
-
-        var username = loginObject.username;
-        var password = loginObject.password;
-        if (username && password) {
-            con.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
-                if (err) {console.log(err); reject(err);}
-                if (results.length > 0) {
-                    console.log("logged in successfully!");
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    res.send(username);
-                    res.end();
-                } else {
-                    console.log("Invalid Credentials Recieved");
-                    res.status(401).end("Invalid Username or Password");
-                }			
-            });
-        } else {
-            console.log("Username / Password not recieved");
-            res.status(400).end("Please Enter a Username and Password");
-        }
-
-    }); 
-
-	
-});
-
 //DELETE METHODS----------------------
 //Delete line item
 app.delete(ENDPOINT+"/line_items/:id", (req, res) => {
     console.log("...DELETE /line_items/{id}");
+    endpoint_counts.delete_line_item_id.quantity += 1;
 
     let sql = "DELETE FROM line_item WHERE id = "+req.params.id;
     con.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("Question deleted");
+        console.log("line item deleted");
         res.end();
     });
 });
@@ -444,6 +561,7 @@ app.delete(ENDPOINT+"/line_items/:id", (req, res) => {
 //(temporarily also customer and address too)
 app.delete(ENDPOINT+"/quotes/:id", (req, res) => {
     console.log("...DELETE /quotes/{id}");
+    endpoint_counts.delete_quote_id.quantity += 1;
 
     let sql =   "DELETE li, q, a, c FROM line_item li "
                 +"JOIN quote q ON q.id=li.quote_id "
@@ -453,8 +571,20 @@ app.delete(ENDPOINT+"/quotes/:id", (req, res) => {
 
     con.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("Quote Deleted");
-        res.end();
+
+        //have to do it twice for the edge cases with quotes that have no line items
+        let sql =   "DELETE q, a, c FROM quote q "
+                +"JOIN address a ON a.id = q.address_id "
+                +"JOIN customer c ON c.id = a.customer_id "
+                +"WHERE q.id = "+req.params.id+";";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+
+            console.log("Quote Deleted");
+            res.end();
+
+        });
     });
 });
 

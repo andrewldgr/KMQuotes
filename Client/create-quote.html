@@ -154,7 +154,7 @@
                 document.getElementById("quoteTemplateDiv"));
 
             document.getElementById("cancelChangesBtn").addEventListener("click", function() {viewAllQuotes()});
-            document.getElementById("saveQuote").addEventListener("click", saveQuote());
+            document.getElementById("saveQuote").addEventListener("click", postNewQuote());
             document.getElementById("addLineItemBtn").addEventListener("click", 
                 function() {addEmptyLineItem(document.getElementById("lineItemDisplayDiv"), document.getElementById("editLineItemTemplate"))});
         }

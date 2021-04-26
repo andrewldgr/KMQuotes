@@ -147,6 +147,11 @@ a {
     display: none;
   }
 
+  .visible {
+    display:block;
+    visibility:visible;
+  }
+
   .template {
     visibility: hidden;
     display: none;

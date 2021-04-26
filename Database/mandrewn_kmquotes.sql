@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2021 at 02:27 AM
+-- Generation Time: Apr 26, 2021 at 10:01 AM
 -- Server version: 8.0.22
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `mandrewn_kmquotes`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounts`
+--
+
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `id` int NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES
+(1, 'andrew', 'password', 'andrew.ledger@student.ufv.ca');
 
 -- --------------------------------------------------------
 
@@ -107,7 +128,8 @@ INSERT INTO `line_item` (`id`, `quote_id`, `title`, `description`, `quantity`, `
 (18, 9, 'Furniture', '3 Chairs will be cleaned, sanded, and sprayed with a paint', 3, 75),
 (19, 10, 'Kitchen Cabinet Refinishing', 'Cabinets will be removed and then put back on', 3, 123),
 (21, 12, 'Door Refinishing', 'Door will be transported by customer to the shop and refinished using a painting process', 3, 400),
-(33, 2, '', '', 1, 0);
+(33, 2, '', '', 1, 0),
+(43, 10, '', '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -138,6 +160,12 @@ INSERT INTO `quote` (`id`, `address_id`) VALUES
 --
 
 --
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `address`
 --
 ALTER TABLE `address`
@@ -166,28 +194,34 @@ ALTER TABLE `quote`
 --
 
 --
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `line_item`
 --
 ALTER TABLE `line_item`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `quote`
 --
 ALTER TABLE `quote`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
