@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 25, 2021 at 08:24 PM
+-- Generation Time: Apr 26, 2021 at 02:27 AM
 -- Server version: 8.0.22
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -44,7 +44,11 @@ CREATE TABLE `address` (
 
 INSERT INTO `address` (`id`, `street_number`, `city`, `province`, `country`, `postal`, `customer_id`) VALUES
 (1, '1754 Salty Rd', 'Abbotsford', 'BC', 'Canada', 'V2S 7C5', 1),
-(2, '111 Bayshore Dr.', 'Vancouver', 'BC', 'Canada', 'V1R 7C5', 2);
+(2, '111 Bayshore Dr.', 'Vancouver', 'BC', 'Canada', 'V1R 7C5', 2),
+(5, '123 Abstract Way', 'Toronto', 'Ontario', 'Canada', 'G3E 4J8', 6),
+(6, '123 Progress Way', 'Chilliwack', 'BC', 'Canada', 'V5H 2F4', 7),
+(7, '123 bart way', 'Springfield', 'TX', 'USA', '83345', 8),
+(9, '123456 123st', 'Youkon', 'NWT', 'Canada', 'H3R 4R7', 10);
 
 -- --------------------------------------------------------
 
@@ -67,7 +71,11 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`id`, `first_name`, `last_name`, `phone`, `email`) VALUES
 (1, 'Andrew', 'Ledger', '(604) 555-1234', 'andrew.ledger@student.ufv.ca'),
-(2, 'Katie', 'Ledger', '(604) 555-1234', 'katie.ledger@student.ufv.ca');
+(2, 'Katie', 'Ledger', '(604) 555-1234', 'katie.ledger@student.ufv.ca'),
+(6, 'Joyce', 'Fredrickson', '555-123-4456', 'joyce.fred@gmail.com'),
+(7, 'Another', 'Customer', '123-444-4444', 'moreemails@gmail.com'),
+(8, 'Homer', 'Simpson', '123-456-9999', 'homer@nuclear.com'),
+(10, 'Andrew', 'The Man', '444-123-5555', 'theman@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -92,8 +100,14 @@ CREATE TABLE `line_item` (
 INSERT INTO `line_item` (`id`, `quote_id`, `title`, `description`, `quantity`, `price`) VALUES
 (1, 1, 'Kitchen Refinishing | Poly', 'Kitchen cabinet doors (100), drawer faces (10), and shelves (2) will be un-installed, cleaned, sanded and refinished using a tinted lacquer, applied by a spray application in a stock colour at our facility. Total coating system will have a 4mil dry build. Kitchen cabinet frame will be cleaned, sanded, and refinished using a tinted lacquer, applied by a spray application in a stock colour in place. Total coating system will have a 4m dry build. Doors and drawers will be re-installed.', 1, 1000),
 (2, 1, 'Handles', 'Part# 9635-128-BNI', 25, 7),
-(4, 2, 'Kitchen Refinishing', 'Your entire kitchen will be painted', 1, 2344.52),
-(5, 3, 'Furniture', 'Furniture must be transported to shop, where we will refinish and spray it with paint', 1, 425.35);
+(4, 2, 'Kitchen Refinishing', 'Your entire kitchen will be paintedd', 1, 2344.52),
+(5, 3, 'Furniture', 'Furniture must be transported to shop, where we will refinish and spray it with paint', 1, 425.35),
+(16, 1, '', '', 1, 100),
+(17, 8, 'Kitchen Cabinet Refinishing', 'This is a line item for kitchen cabinet refinishing', 4, 3000),
+(18, 9, 'Furniture', '3 Chairs will be cleaned, sanded, and sprayed with a paint', 3, 75),
+(19, 10, 'Kitchen Cabinet Refinishing', 'Cabinets will be removed and then put back on', 3, 123),
+(21, 12, 'Door Refinishing', 'Door will be transported by customer to the shop and refinished using a painting process', 3, 400),
+(33, 2, '', '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -113,7 +127,11 @@ CREATE TABLE `quote` (
 
 INSERT INTO `quote` (`id`, `address_id`) VALUES
 (1, 1),
-(2, 2);
+(2, 2),
+(8, 5),
+(9, 6),
+(10, 7),
+(12, 9);
 
 --
 -- Indexes for dumped tables
@@ -151,25 +169,25 @@ ALTER TABLE `quote`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `line_item`
 --
 ALTER TABLE `line_item`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `quote`
 --
 ALTER TABLE `quote`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

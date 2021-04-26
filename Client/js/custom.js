@@ -6,6 +6,40 @@ if (window.location.host == "localhost") {
     SERVER = "https://www.mandrewnator.com/kmquotes/api/v1";
 }
 
+function login(){
+    return function() {
+        //gather information
+        let loginObject = {
+            username: document.querySelector('[name="username"]').value,
+            password: document.querySelector('[name="password"]').value
+        };
+
+        sendLoginDetails(loginObject).then(function(resolveText){
+            window.location.href = "admin.html";
+        }, function(errorText) {
+           
+        });
+    }
+    
+}
+
+function sendLoginDetails(loginObject) {
+    return new Promise(function(resolve, reject) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                resolve(xmlHttp.responseText);
+            } else if (xmlHttp.status >= 300) {
+                reject("Error Recieved");
+            } else if (xmlHttp.readyState == 4 && xmlHttp.status == 0){
+                reject("Could Not Connect to Server");
+            }
+        }
+        xmlHttp.open("POST", SERVER+"/login/", true);
+        xmlHttp.send(JSON.stringify(loginObject));
+    });
+}
+
 function deleteQuoteCurry(quote_id){
     return function() {
         areaLoading(this, "sm");
@@ -106,7 +140,6 @@ function saveQuote() {
         }, function(errorText) {
 
         });
-
     }
 }
 

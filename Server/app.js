@@ -3,8 +3,17 @@ const mysql = require("mysql");
 const qs = require("querystring");
 const url = require('url');
 const express = require('express');
+const session = require('express-session');
+var bodyParser = require('body-parser');
 const router = express.Router();
 const app = express();
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 const os = require('os');
 
 var ENDPOINT;
@@ -262,6 +271,15 @@ app.get(ENDPOINT+"/quotes/:id", (req, res) => {
     });
 });
 
+//Get admin stuff
+app.get('/admin', function(request, response) {
+	if (request.session.loggedin) {
+		response.send('Welcome back, ' + request.session.username + '!');
+	} else {
+		response.send('Please login to view this page!');
+	}
+	response.end();
+});
 
 //PUT METHODS-------------------
 //update a quote by id
@@ -348,7 +366,7 @@ app.put(ENDPOINT+"/quotes/:id", (req, res) => {
 });
 
 //POST METHODS------------------
-app.post("*", (req, res) => {
+app.post("/neverused", (req, res) => {
     console.log("...is a POST message");
     let body = '';
 
@@ -363,62 +381,51 @@ app.post("*", (req, res) => {
 
     req.on('end', function () {
 
-        let post = qs.parse(body);
-        // use post['blah'], etc.
-
-        if (post['function'] == "NEWSCORE") {
-            console.log("NEWSCORE Message Recieved");
-
-            //res.end("Function: "+post['function']+" qtext: "+post['qtext']+" codeText: "+post['codetext']);
-
-            let sql = "INSERT INTO score(name, score) values ('"+post['name']+"', '"+post['score']+"');";
-
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("1 score record inserted");
-                res.end("Submitted!")
-            });
-        }
-
-        //When retireving the information
-        if (post['function'] == "NEWQ") {
-            console.log("NEWQ Message Recieved");
-
-            //res.end("Function: "+post['function']+" qtext: "+post['qtext']+" codeText: "+post['codetext']);
-
-            let sql = "INSERT INTO questions(QText, CodeText) values ('"+post['qtext']+"', '"+post['codetext']+"');";
-
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("1 question record inserted");
-
-                sql = "SELECT QID FROM questions WHERE (QID = LAST_INSERT_ID())"
-
-                con.query(sql, function (err, result) {
-                    if (err) throw err;
-                    Object.keys(result).forEach(function(key) {
-                        let row = result[key];
-                        res.end(""+row.QID);
-                    });
-                });
-            });
-        }
-
-        if (post['function'] == "NEWA") {
-
-            console.log("NEWA Message Recieved");
-            if (post['iscorrect'] != "true") {
-                post['iscorrect'] = "false";
-            }
-
-            let sql = "INSERT INTO answers(QID, AText, IsCorrect) values ('"+post['qid']+"', '"+post['atext']+"', '"+post['iscorrect']+"')";
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("1 answer record inserted. aText = "+post['atext']);
-                res.end();
-            });
-        }
     }); 
+});
+
+//logging in
+app.post(ENDPOINT+"/login", function(req, res) {
+
+    console.log("...POST /login");
+    let body = '';
+
+    req.on('data', function (data) {
+        body += data;
+
+        // Too much POST data, kill the connection!
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+        if (body.length > 1e6)
+            req.socket.destroy();
+    });
+
+    req.on('end', function () {
+        loginObject = JSON.parse(body);
+
+        var username = loginObject.username;
+        var password = loginObject.password;
+        if (username && password) {
+            con.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
+                if (err) {console.log(err); reject(err);}
+                if (results.length > 0) {
+                    console.log("logged in successfully!");
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    res.send(username);
+                    res.end();
+                } else {
+                    console.log("Invalid Credentials Recieved");
+                    res.status(401).end("Invalid Username or Password");
+                }			
+            });
+        } else {
+            console.log("Username / Password not recieved");
+            res.status(400).end("Please Enter a Username and Password");
+        }
+
+    }); 
+
+	
 });
 
 //DELETE METHODS----------------------
