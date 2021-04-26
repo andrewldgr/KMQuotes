@@ -361,7 +361,8 @@ app.get(ENDPOINT+'/logout', function (req, res) {
 
     totally_insecure_session.loggedin = false;
     console.log("logged out!");
-    res.send("logout success!");
+    messageObject = {logout: true};
+    res.send(JSON.stringify(messageObject));
     res.end();
 });
 

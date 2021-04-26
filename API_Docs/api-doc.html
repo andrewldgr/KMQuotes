@@ -761,9 +761,15 @@
             -->
             <li class="nav-fixed nav-header active" data-group="_"><a href="#api-_">API Summary</a></li>
 
-                  <li class="nav-header" data-group="Login"><a href="#api-Login">API Methods - Login</a></li>
-                    <li data-group="Login" data-name="loginUser" class="">
-                      <a href="#api-Login-loginUser">loginUser</a>
+                  <li class="nav-header" data-group="Authentication"><a href="#api-Authentication">API Methods - Authentication</a></li>
+                    <li data-group="Authentication" data-name="getAdminInfo" class="">
+                      <a href="#api-Authentication-getAdminInfo">getAdminInfo</a>
+                    </li>
+                    <li data-group="Authentication" data-name="loginUser" class="">
+                      <a href="#api-Authentication-loginUser">loginUser</a>
+                    </li>
+                    <li data-group="Authentication" data-name="logoutUser" class="">
+                      <a href="#api-Authentication-logoutUser">logoutUser</a>
                     </li>
                   <li class="nav-header" data-group="Quotes"><a href="#api-Quotes">API Methods - Quotes</a></li>
                     <li data-group="Quotes" data-name="addQuote" class="">
@@ -778,11 +784,15 @@
                     <li data-group="Quotes" data-name="getQuoteById" class="">
                       <a href="#api-Quotes-getQuoteById">getQuoteById</a>
                     </li>
-                    <li data-group="Quotes" data-name="getQuoteByTerm" class="">
-                      <a href="#api-Quotes-getQuoteByTerm">getQuoteByTerm</a>
+                    <li data-group="Quotes" data-name="logoutUser" class="">
+                      <a href="#api-Quotes-logoutUser">logoutUser</a>
                     </li>
                     <li data-group="Quotes" data-name="updateQuote" class="">
                       <a href="#api-Quotes-updateQuote">updateQuote</a>
+                    </li>
+                  <li class="nav-header" data-group="Search"><a href="#api-Search">API Methods - Search</a></li>
+                    <li data-group="Search" data-name="getQuoteByTerm" class="">
+                      <a href="#api-Search-getQuoteByTerm">getQuoteByTerm</a>
                     </li>
           </ul>
         </nav>
@@ -803,10 +813,329 @@
           </div>
         </div>
         <div id="sections">
-                <section id="api-Login">
-                  <h1>Login</h1>
-                    <div id="api-Login-loginUser">
-                      <article id="api-Login-loginUser-0" data-group="User" data-name="loginUser" data-version="0">
+                <section id="api-Authentication">
+                  <h1>Authentication</h1>
+                    <div id="api-Authentication-getAdminInfo">
+                      <article id="api-Authentication-getAdminInfo-0" data-group="User" data-name="getAdminInfo" data-version="0">
+                        <div class="pull-left">
+                          <h1>getAdminInfo</h1>
+                          <p>Retrieved administration information</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/admin</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Authentication-getAdminInfo-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-getAdminInfo-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-getAdminInfo-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Authentication-getAdminInfo-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Authentication-getAdminInfo-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://mandrewnator.com/group-project/api/v2/admin"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.AuthenticationApi;
+
+import java.io.File;
+import java.util.*;
+
+public class AuthenticationApiExample {
+
+    public static void main(String[] args) {
+        
+        AuthenticationApi apiInstance = new AuthenticationApi();
+        try {
+            Object result = apiInstance.getAdminInfo();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuthenticationApi#getAdminInfo");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.AuthenticationApi;
+
+public class AuthenticationApiExample {
+
+    public static void main(String[] args) {
+        AuthenticationApi apiInstance = new AuthenticationApi();
+        try {
+            Object result = apiInstance.getAdminInfo();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuthenticationApi#getAdminInfo");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+AuthenticationApi *apiInstance = [[AuthenticationApi alloc] init];
+
+// Retrieved administration information
+[apiInstance getAdminInfoWithCompletionHandler: 
+              ^(Object output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var KitchenMakeoversQuotes = require('kitchen_makeovers_quotes');
+
+var api = new KitchenMakeoversQuotes.AuthenticationApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getAdminInfo(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Authentication-getAdminInfo-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getAdminInfoExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new AuthenticationApi();
+
+            try
+            {
+                // Retrieved administration information
+                Object result = apiInstance.getAdminInfo();
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling AuthenticationApi.getAdminInfo: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiAuthenticationApi();
+
+try {
+    $result = $api_instance->getAdminInfo();
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling AuthenticationApi->getAdminInfo: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::AuthenticationApi;
+
+my $api_instance = WWW::SwaggerClient::AuthenticationApi->new();
+
+eval { 
+    my $result = $api_instance->getAdminInfo();
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling AuthenticationApi->getAdminInfo: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-getAdminInfo-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.AuthenticationApi()
+
+try: 
+    # Retrieved administration information
+    api_response = api_instance.get_admin_info()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AuthenticationApi->getAdminInfo: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - successful operation </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getAdminInfo-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getAdminInfo-200-schema">
+                                  <div id='responses-getAdminInfo-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "successful operation",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "object",
+        "example" : {
+          "get_quotes" : {
+            "method" : "GET",
+            "endpoint" : "/quotes",
+            "quantity" : 0
+          },
+          "get_quote_id" : {
+            "method" : "GET",
+            "endpoint" : "/quotes/{id}",
+            "quantity" : 0
+          },
+          "get_admin" : {
+            "method" : "GET",
+            "endpoint" : "/admin",
+            "quantity" : 0
+          },
+          "put_quote_id" : {
+            "method" : "PUT",
+            "endpoint" : "/quotes/{id}",
+            "quantity" : 0
+          },
+          "post_login" : {
+            "method" : "POST",
+            "endpoint" : "/login",
+            "quantity" : 0
+          },
+          "post_quotes" : {
+            "method" : "POST",
+            "endpoint" : "/quotes",
+            "quantity" : 0
+          },
+          "delete_line_item_id" : {
+            "method" : "DELETE",
+            "endpoint" : "/line_items/{id}",
+            "quantity" : 0
+          },
+          "delete_quote_id" : {
+            "method" : "DELETE",
+            "endpoint" : "/quotes/{id}",
+            "quantity" : 0
+          },
+          "get_logout" : {
+            "method" : "GET",
+            "endpoint" : "/logout",
+            "quantity" : 0
+          },
+          "get_quotes_search" : {
+            "method" : "GET",
+            "endpoint" : "/search/{q}",
+            "quantity" : 0
+          }
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getAdminInfo-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getAdminInfo-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getAdminInfo-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Body must be empty </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Authentication-loginUser">
+                      <article id="api-Authentication-loginUser-0" data-group="User" data-name="loginUser" data-version="0">
                         <div class="pull-left">
                           <h1>loginUser</h1>
                           <p>Logs user into the system</p>
@@ -822,80 +1151,80 @@
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Login-loginUser-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Login-loginUser-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Login-loginUser-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Login-loginUser-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Login-loginUser-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Login-loginUser-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Authentication-loginUser-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-loginUser-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Authentication-loginUser-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-loginUser-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Authentication-loginUser-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Authentication-loginUser-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Login-loginUser-0-curl">
+                          <div class="tab-pane active" id="examples-Authentication-loginUser-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
--H "Accept: application/xml,application/json"\
+-H "Accept: application/json"\
 "https://mandrewnator.com/group-project/api/v2/login?username=&password="</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Login-loginUser-0-java">
+                          <div class="tab-pane" id="examples-Authentication-loginUser-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
-import io.swagger.client.api.LoginApi;
+import io.swagger.client.api.AuthenticationApi;
 
 import java.io.File;
 import java.util.*;
 
-public class LoginApiExample {
+public class AuthenticationApiExample {
 
     public static void main(String[] args) {
         
-        LoginApi apiInstance = new LoginApi();
+        AuthenticationApi apiInstance = new AuthenticationApi();
         String username = username_example; // String | The user name for login
         String password = password_example; // String | The password for login in clear text
         try {
             'String' result = apiInstance.loginUser(username, password);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling LoginApi#loginUser");
+            System.err.println("Exception when calling AuthenticationApi#loginUser");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Login-loginUser-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.LoginApi;
+                          <div class="tab-pane" id="examples-Authentication-loginUser-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.AuthenticationApi;
 
-public class LoginApiExample {
+public class AuthenticationApiExample {
 
     public static void main(String[] args) {
-        LoginApi apiInstance = new LoginApi();
+        AuthenticationApi apiInstance = new AuthenticationApi();
         String username = username_example; // String | The user name for login
         String password = password_example; // String | The password for login in clear text
         try {
             'String' result = apiInstance.loginUser(username, password);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling LoginApi#loginUser");
+            System.err.println("Exception when calling AuthenticationApi#loginUser");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Login-loginUser-0-groovy">
+  <div class="tab-pane" id="examples-Authentication-loginUser-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Login-loginUser-0-objc">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">String *username = username_example; // The user name for login
 String *password = password_example; // The password for login in clear text
 
-LoginApi *apiInstance = [[LoginApi alloc] init];
+AuthenticationApi *apiInstance = [[AuthenticationApi alloc] init];
 
 // Logs user into the system
 [apiInstance loginUserWith:username
@@ -911,10 +1240,10 @@ LoginApi *apiInstance = [[LoginApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Login-loginUser-0-javascript">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var KitchenMakeoversQuotes = require('kitchen_makeovers_quotes');
 
-var api = new KitchenMakeoversQuotes.LoginApi()
+var api = new KitchenMakeoversQuotes.AuthenticationApi()
 var username = username_example; // {{String}} The user name for login
 var password = password_example; // {{String}} The password for login in clear text
 
@@ -929,10 +1258,10 @@ api.loginUser(username, password, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Login-loginUser-0-angular">
+                            <!--<div class="tab-pane" id="examples-Authentication-loginUser-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Login-loginUser-0-csharp">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -946,7 +1275,7 @@ namespace Example
         public void main()
         {
 
-            var apiInstance = new LoginApi();
+            var apiInstance = new AuthenticationApi();
             var username = username_example;  // String | The user name for login
             var password = password_example;  // String | The password for login in clear text
 
@@ -958,7 +1287,7 @@ namespace Example
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling LoginApi.loginUser: " + e.Message );
+                Debug.Print("Exception when calling AuthenticationApi.loginUser: " + e.Message );
             }
         }
     }
@@ -966,11 +1295,11 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Login-loginUser-0-php">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$api_instance = new Swagger\Client\ApiLoginApi();
+$api_instance = new Swagger\Client\ApiAuthenticationApi();
 $username = username_example; // String | The user name for login
 $password = password_example; // String | The password for login in clear text
 
@@ -978,17 +1307,17 @@ try {
     $result = $api_instance->loginUser($username, $password);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling LoginApi->loginUser: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling AuthenticationApi->loginUser: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Login-loginUser-0-perl">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::LoginApi;
+use WWW::SwaggerClient::AuthenticationApi;
 
-my $api_instance = WWW::SwaggerClient::LoginApi->new();
+my $api_instance = WWW::SwaggerClient::AuthenticationApi->new();
 my $username = username_example; # String | The user name for login
 my $password = password_example; # String | The password for login in clear text
 
@@ -997,11 +1326,11 @@ eval {
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling LoginApi->loginUser: $@\n";
+    warn "Exception when calling AuthenticationApi->loginUser: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Login-loginUser-0-python">
+                            <div class="tab-pane" id="examples-Authentication-loginUser-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
@@ -1009,7 +1338,7 @@ from swagger_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.LoginApi()
+api_instance = swagger_client.AuthenticationApi()
 username = username_example # String | The user name for login
 password = password_example # String | The password for login in clear text
 
@@ -1018,7 +1347,7 @@ try:
     api_response = api_instance.login_user(username, password)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling LoginApi->loginUser: %s\n" % e)</code></pre>
+    print("Exception when calling AuthenticationApi->loginUser: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
@@ -1121,20 +1450,15 @@ except ApiException as e:
     }
   },
   "content" : {
-    "application/xml" : {
-      "schema" : {
-        "type" : "string",
-        "x-content-type" : "application/xml"
-      }
-    },
     "application/json" : {
       "schema" : {
-        "type" : "string"
+        "type" : "string",
+        "x-content-type" : "application/json"
       }
     }
   }
 };
-                                        var schema = schemaWrapper.content["application/xml"].schema;
+                                        var schema = schemaWrapper.content["application/json"].schema;
                                         if (schema.$ref != null) {
                                           schema = defsParser.$refs.get(schema.$ref);
                                         } else {
@@ -1181,6 +1505,276 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 400 - Invalid username/password supplied </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Authentication-logoutUser">
+                      <article id="api-Authentication-logoutUser-0" data-group="User" data-name="logoutUser" data-version="0">
+                        <div class="pull-left">
+                          <h1>logoutUser</h1>
+                          <p>Logs user out of the system</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/logout</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Authentication-logoutUser-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-logoutUser-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Authentication-logoutUser-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Authentication-logoutUser-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Authentication-logoutUser-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://mandrewnator.com/group-project/api/v2/logout"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Authentication-logoutUser-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.AuthenticationApi;
+
+import java.io.File;
+import java.util.*;
+
+public class AuthenticationApiExample {
+
+    public static void main(String[] args) {
+        
+        AuthenticationApi apiInstance = new AuthenticationApi();
+        try {
+            Object result = apiInstance.logoutUser();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuthenticationApi#logoutUser");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Authentication-logoutUser-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.AuthenticationApi;
+
+public class AuthenticationApiExample {
+
+    public static void main(String[] args) {
+        AuthenticationApi apiInstance = new AuthenticationApi();
+        try {
+            Object result = apiInstance.logoutUser();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuthenticationApi#logoutUser");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Authentication-logoutUser-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+AuthenticationApi *apiInstance = [[AuthenticationApi alloc] init];
+
+// Logs user out of the system
+[apiInstance logoutUserWithCompletionHandler: 
+              ^(Object output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var KitchenMakeoversQuotes = require('kitchen_makeovers_quotes');
+
+var api = new KitchenMakeoversQuotes.AuthenticationApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.logoutUser(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Authentication-logoutUser-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class logoutUserExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new AuthenticationApi();
+
+            try
+            {
+                // Logs user out of the system
+                Object result = apiInstance.logoutUser();
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling AuthenticationApi.logoutUser: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiAuthenticationApi();
+
+try {
+    $result = $api_instance->logoutUser();
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling AuthenticationApi->logoutUser: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::AuthenticationApi;
+
+my $api_instance = WWW::SwaggerClient::AuthenticationApi->new();
+
+eval { 
+    my $result = $api_instance->logoutUser();
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling AuthenticationApi->logoutUser: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Authentication-logoutUser-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.AuthenticationApi()
+
+try: 
+    # Logs user out of the system
+    api_response = api_instance.logout_user()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling AuthenticationApi->logoutUser: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - successful operation </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-logoutUser-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-logoutUser-200-schema">
+                                  <div id='responses-logoutUser-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "successful operation",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "object",
+        "example" : {
+          "logout" : true
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-logoutUser-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-logoutUser-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-logoutUser-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Body must be empty </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -2407,44 +3001,43 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
-                    <div id="api-Quotes-getQuoteByTerm">
-                      <article id="api-Quotes-getQuoteByTerm-0" data-group="User" data-name="getQuoteByTerm" data-version="0">
+                    <div id="api-Quotes-logoutUser">
+                      <article id="api-Quotes-logoutUser-0" data-group="User" data-name="logoutUser" data-version="0">
                         <div class="pull-left">
-                          <h1>getQuoteByTerm</h1>
-                          <p>Find quote that has any content matching search terms</p>
+                          <h1>logoutUser</h1>
+                          <p>delete a line item</p>
                         </div>
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked">Returns a list of quotes</p>
+                        <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/quotes/search/{search-terms}</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/line_items</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-Quotes-getQuoteByTerm-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-java">Java</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-Quotes-getQuoteByTerm-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-Quotes-getQuoteByTerm-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-Quotes-getQuoteByTerm-0-python">Python</a></li>
+                          <li class="active"><a href="#examples-Quotes-logoutUser-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Quotes-logoutUser-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Quotes-logoutUser-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Quotes-logoutUser-0-python">Python</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-Quotes-getQuoteByTerm-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
--H "api_key: [[apiKey]]"\
+                          <div class="tab-pane active" id="examples-Quotes-logoutUser-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
 -H "Accept: application/json"\
-"https://mandrewnator.com/group-project/api/v2/quotes/search/{search-terms}"</code></pre>
+"https://mandrewnator.com/group-project/api/v2/line_items"</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-java">
+                          <div class="tab-pane" id="examples-Quotes-logoutUser-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
 import io.swagger.client.auth.*;
 import io.swagger.client.model.*;
@@ -2456,62 +3049,47 @@ import java.util.*;
 public class QuotesApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-
-        // Configure API key authorization: api_key
-        ApiKeyAuth api_key = (ApiKeyAuth) defaultClient.getAuthentication("api_key");
-        api_key.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //api_key.setApiKeyPrefix("Token");
-
+        
         QuotesApi apiInstance = new QuotesApi();
-        Long searchTerms = 789; // Long | ID of quote to return
         try {
-            quote result = apiInstance.getQuoteByTerm(searchTerms);
+            Object result = apiInstance.logoutUser();
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling QuotesApi#getQuoteByTerm");
+            System.err.println("Exception when calling QuotesApi#logoutUser");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-android">
+                          <div class="tab-pane" id="examples-Quotes-logoutUser-0-android">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.QuotesApi;
 
 public class QuotesApiExample {
 
     public static void main(String[] args) {
         QuotesApi apiInstance = new QuotesApi();
-        Long searchTerms = 789; // Long | ID of quote to return
         try {
-            quote result = apiInstance.getQuoteByTerm(searchTerms);
+            Object result = apiInstance.logoutUser();
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling QuotesApi#getQuoteByTerm");
+            System.err.println("Exception when calling QuotesApi#logoutUser");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-groovy">
+  <div class="tab-pane" id="examples-Quotes-logoutUser-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure API key authorization: (authentication scheme: api_key)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"api_key"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"api_key"];
-Long *searchTerms = 789; // ID of quote to return
-
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
 QuotesApi *apiInstance = [[QuotesApi alloc] init];
 
-// Find quote that has any content matching search terms
-[apiInstance getQuoteByTermWith:searchTerms
-              completionHandler: ^(quote output, NSError* error) {
+// delete a line item
+[apiInstance logoutUserWithCompletionHandler: 
+              ^(Object output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -2522,19 +3100,10 @@ QuotesApi *apiInstance = [[QuotesApi alloc] init];
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-javascript">
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var KitchenMakeoversQuotes = require('kitchen_makeovers_quotes');
-var defaultClient = KitchenMakeoversQuotes.ApiClient.instance;
-
-// Configure API key authorization: api_key
-var api_key = defaultClient.authentications['api_key'];
-api_key.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//api_key.apiKeyPrefix['api_key'] = "Token"
 
 var api = new KitchenMakeoversQuotes.QuotesApi()
-var searchTerms = 789; // {{Long}} ID of quote to return
-
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -2542,14 +3111,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.getQuoteByTerm(searchTerms, callback);
+api.logoutUser(callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-angular">
+                            <!--<div class="tab-pane" id="examples-Quotes-logoutUser-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-csharp">
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using IO.Swagger.Api;
@@ -2558,28 +3127,22 @@ using IO.Swagger.Model;
 
 namespace Example
 {
-    public class getQuoteByTermExample
+    public class logoutUserExample
     {
         public void main()
         {
 
-            // Configure API key authorization: api_key
-            Configuration.Default.ApiKey.Add("api_key", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("api_key", "Bearer");
-
             var apiInstance = new QuotesApi();
-            var searchTerms = 789;  // Long | ID of quote to return
 
             try
             {
-                // Find quote that has any content matching search terms
-                quote result = apiInstance.getQuoteByTerm(searchTerms);
+                // delete a line item
+                Object result = apiInstance.logoutUser();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
             {
-                Debug.Print("Exception when calling QuotesApi.getQuoteByTerm: " + e.Message );
+                Debug.Print("Exception when calling QuotesApi.logoutUser: " + e.Message );
             }
         }
     }
@@ -2587,108 +3150,58 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-php">
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-// Configure API key authorization: api_key
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('api_key', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api_key', 'Bearer');
-
 $api_instance = new Swagger\Client\ApiQuotesApi();
-$searchTerms = 789; // Long | ID of quote to return
 
 try {
-    $result = $api_instance->getQuoteByTerm($searchTerms);
+    $result = $api_instance->logoutUser();
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling QuotesApi->getQuoteByTerm: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling QuotesApi->logoutUser: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-perl">
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::QuotesApi;
 
-# Configure API key authorization: api_key
-$WWW::SwaggerClient::Configuration::api_key->{'api_key'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'api_key'} = "Bearer";
-
 my $api_instance = WWW::SwaggerClient::QuotesApi->new();
-my $searchTerms = 789; # Long | ID of quote to return
 
 eval { 
-    my $result = $api_instance->getQuoteByTerm(searchTerms => $searchTerms);
+    my $result = $api_instance->logoutUser();
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling QuotesApi->getQuoteByTerm: $@\n";
+    warn "Exception when calling QuotesApi->logoutUser: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-Quotes-getQuoteByTerm-0-python">
+                            <div class="tab-pane" id="examples-Quotes-logoutUser-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 
-# Configure API key authorization: api_key
-swagger_client.configuration.api_key['api_key'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['api_key'] = 'Bearer'
-
 # create an instance of the API class
 api_instance = swagger_client.QuotesApi()
-searchTerms = 789 # Long | ID of quote to return
 
 try: 
-    # Find quote that has any content matching search terms
-    api_response = api_instance.get_quote_by_term(searchTerms)
+    # delete a line item
+    api_response = api_instance.logout_user()
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling QuotesApi->getQuoteByTerm: %s\n" % e)</code></pre>
+    print("Exception when calling QuotesApi->logoutUser: %s\n" % e)</code></pre>
                             </div>
                           </div>
 
                           <h2>Parameters</h2>
 
-                            <div class="methodsubtabletitle">Path parameters</div>
-                            <table id="methodsubtable">
-                                <tr>
-                                  <th width="150px">Name</th>
-                                  <th>Description</th>
-                                </tr>
-                                  <tr><td style="width:150px;">search-terms*</td>
-                                  <td>
-                                  
-                                  
-                                      <div id="d2e199_getQuoteByTerm_searchTerms">
-                                          <div class="json-schema-view">
-                                              <div class="primitive">
-                                                  <span class="type">
-                                                      Long
-                                                  </span>
-                                                      <span class="format">
-                                                          (int64)
-                                                      </span>
-                                  
-                                                      <div class="inner description">
-                                                          ID of quote to return
-                                                      </div>
-                                              </div>
-                                                  <div class="inner required">
-                                                      Required
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </td>
-                                  </tr>
-                            </table>
 
 
 
@@ -2699,14 +3212,14 @@ except ApiException as e:
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-getQuoteByTerm-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-logoutUser-200-schema">Schema</a>
                                 </li>
 
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
-                                <div class="tab-pane active" id="responses-getQuoteByTerm-200-schema">
-                                  <div id='responses-getQuoteByTerm-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                <div class="tab-pane active" id="responses-logoutUser-200-schema">
+                                  <div id='responses-logoutUser-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
                                     <script>
                                       $(document).ready(function() {
                                         var schemaWrapper = {
@@ -2714,7 +3227,9 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/quote"
+        "type" : "object",
+        "example" : { },
+        "x-content-type" : "application/json"
       }
     }
   }
@@ -2732,26 +3247,18 @@ except ApiException as e:
 
                                         //console.log(JSON.stringify(schema));
                                         var view = new JSONSchemaView(schema, 3);
-                                        $('#responses-getQuoteByTerm-200-schema-data').val(stringify(schema));
-                                        var result = $('#responses-getQuoteByTerm-200-schema-200');
+                                        $('#responses-logoutUser-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-logoutUser-200-schema-200');
                                         result.empty();
                                         result.append(view.render());
                                       });
                                     </script>
                                   </div>
-                                  <input id='responses-getQuoteByTerm-200-schema-data' type='hidden' value=''></input>
+                                  <input id='responses-logoutUser-200-schema-data' type='hidden' value=''></input>
                                 </div>
                             </div>
 
-                            <h3> Status: 400 - Invalid term supplied </h3>
-
-                            <ul class="nav nav-tabs nav-tabs-examples" >
-                            </ul>
-
-                            <div class="tab-content" style='margin-bottom: 10px;'>
-                            </div>
-
-                            <h3> Status: 404 - not quotes found </h3>
+                            <h3> Status: 400 - Body must be empty </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -3060,6 +3567,364 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 404 - User not found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-Search">
+                  <h1>Search</h1>
+                    <div id="api-Search-getQuoteByTerm">
+                      <article id="api-Search-getQuoteByTerm-0" data-group="User" data-name="getQuoteByTerm" data-version="0">
+                        <div class="pull-left">
+                          <h1>getQuoteByTerm</h1>
+                          <p>Find quote that has any content matching search terms</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Returns a list of quotes</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/search/{search-terms}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Search-getQuoteByTerm-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Search-getQuoteByTerm-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Search-getQuoteByTerm-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Search-getQuoteByTerm-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Search-getQuoteByTerm-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "api_key: [[apiKey]]"\
+-H "Accept: application/json"\
+"https://mandrewnator.com/group-project/api/v2/search/{search-terms}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.SearchApi;
+
+import java.io.File;
+import java.util.*;
+
+public class SearchApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure API key authorization: api_key
+        ApiKeyAuth api_key = (ApiKeyAuth) defaultClient.getAuthentication("api_key");
+        api_key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //api_key.setApiKeyPrefix("Token");
+
+        SearchApi apiInstance = new SearchApi();
+        Long searchTerms = 789; // Long | ID of quote to return
+        try {
+            quote result = apiInstance.getQuoteByTerm(searchTerms);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SearchApi#getQuoteByTerm");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.SearchApi;
+
+public class SearchApiExample {
+
+    public static void main(String[] args) {
+        SearchApi apiInstance = new SearchApi();
+        Long searchTerms = 789; // Long | ID of quote to return
+        try {
+            quote result = apiInstance.getQuoteByTerm(searchTerms);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SearchApi#getQuoteByTerm");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure API key authorization: (authentication scheme: api_key)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"api_key"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"api_key"];
+Long *searchTerms = 789; // ID of quote to return
+
+SearchApi *apiInstance = [[SearchApi alloc] init];
+
+// Find quote that has any content matching search terms
+[apiInstance getQuoteByTermWith:searchTerms
+              completionHandler: ^(quote output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var KitchenMakeoversQuotes = require('kitchen_makeovers_quotes');
+var defaultClient = KitchenMakeoversQuotes.ApiClient.instance;
+
+// Configure API key authorization: api_key
+var api_key = defaultClient.authentications['api_key'];
+api_key.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//api_key.apiKeyPrefix['api_key'] = "Token"
+
+var api = new KitchenMakeoversQuotes.SearchApi()
+var searchTerms = 789; // {{Long}} ID of quote to return
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getQuoteByTerm(searchTerms, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Search-getQuoteByTerm-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getQuoteByTermExample
+    {
+        public void main()
+        {
+
+            // Configure API key authorization: api_key
+            Configuration.Default.ApiKey.Add("api_key", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("api_key", "Bearer");
+
+            var apiInstance = new SearchApi();
+            var searchTerms = 789;  // Long | ID of quote to return
+
+            try
+            {
+                // Find quote that has any content matching search terms
+                quote result = apiInstance.getQuoteByTerm(searchTerms);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling SearchApi.getQuoteByTerm: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: api_key
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('api_key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api_key', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiSearchApi();
+$searchTerms = 789; // Long | ID of quote to return
+
+try {
+    $result = $api_instance->getQuoteByTerm($searchTerms);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SearchApi->getQuoteByTerm: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::SearchApi;
+
+# Configure API key authorization: api_key
+$WWW::SwaggerClient::Configuration::api_key->{'api_key'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'api_key'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::SearchApi->new();
+my $searchTerms = 789; # Long | ID of quote to return
+
+eval { 
+    my $result = $api_instance->getQuoteByTerm(searchTerms => $searchTerms);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling SearchApi->getQuoteByTerm: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Search-getQuoteByTerm-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: api_key
+swagger_client.configuration.api_key['api_key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['api_key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.SearchApi()
+searchTerms = 789 # Long | ID of quote to return
+
+try: 
+    # Find quote that has any content matching search terms
+    api_response = api_instance.get_quote_by_term(searchTerms)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SearchApi->getQuoteByTerm: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">search-terms*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getQuoteByTerm_searchTerms">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Long
+                                                  </span>
+                                                      <span class="format">
+                                                          (int64)
+                                                      </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID of quote to return
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - successful operation </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getQuoteByTerm-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getQuoteByTerm-200-schema">
+                                  <div id='responses-getQuoteByTerm-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "successful operation",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/quote"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getQuoteByTerm-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getQuoteByTerm-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getQuoteByTerm-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 400 - Invalid term supplied </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 404 - not quotes found </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
