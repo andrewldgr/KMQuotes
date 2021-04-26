@@ -452,6 +452,40 @@ function deleteLineItem(line_item_id) {
     });
 }
 
+function loadSearchQuotes(search_terms, display_div, template_div) {
+    areaLoading(display_div);
+
+    retrieveQuotesLike(search_terms)
+    .then( function(resolveText) {
+        let qObject = JSON.parse(resolveText);
+        displayQuotes(qObject, display_div, template_div)
+        .then( function() {
+            areaLoaded(display_div);
+        });
+    }, function(errorText) {
+        var t = document.createTextNode(errorText);
+        display_div.appendChild(t); 
+        areaLoaded(display_div);
+    });
+}
+
+function retrieveQuotesLike(search_terms) {
+    return new Promise (function(resolve, reject) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                resolve(xmlHttp.responseText);
+            } else if (xmlHttp.status >= 300) {
+                reject("Could Not Retrieve Quotes");
+            } else if (xmlHttp.readyState == 4 && xmlHttp.status == 0){
+                reject("Could Not Connect to Server");
+            }
+        }
+        xmlHttp.open("GET", SERVER+"/search/"+search_terms, true);
+        xmlHttp.send("");
+    });
+}
+
 function loadAllQuotes(display_div, template_div) {
     areaLoading(display_div);
 

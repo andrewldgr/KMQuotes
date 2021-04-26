@@ -21,17 +21,17 @@
 <body>
     
     <header class="header">  
-            <div class="row align-center">
-                <div class="col-sm-1 col-md-3 d-none d-md-flex align-center">
-                    <a href="index.html"><img src="./images/KitchenMakeovers_MasterLogo_FullColour SMALL.png" alt="profile image" /></a>
-                </div>
-                <div class="col-md-6 col-7">
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="col-md-3 col-4">
-                    <a class="btn btn-primary btn-lg" href="search-quotes.html"><i class="fas fa-search"></i> Search</a>              
-                </div>
+        <div class="row align-center">
+            <div class="col-sm-1 col-md-3 d-none d-md-flex align-center">
+                <a href="index.html"><img src="./images/KitchenMakeovers_MasterLogo_FullColour SMALL.png" alt="profile image" /></a>
             </div>
+            <div class="col-md-6 col-7">
+                <input id="searchBox" type="text" class="form-control" />
+            </div>
+            <div class="col-md-3 col-4">
+                <a id="searchBtn" class="btn btn-primary btn-lg"><i class="fas fa-search"></i> Search</a>              
+            </div>
+        </div>
     </header>
 
     <div class="container sections-wrapper">
@@ -104,6 +104,9 @@
 
             document.getElementById("editQuote").addEventListener("click", editQuote(quote_id));
             document.getElementById("allQuotesBtn").addEventListener("click", function() {viewAllQuotes();});
+            document.getElementById("searchBtn").addEventListener("click", function(){
+                window.location.href = ("./search-quotes.html?q="+encodeURI(document.getElementById("searchBox").value));
+            });
         }
         
     </script>
