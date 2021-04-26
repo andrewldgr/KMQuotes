@@ -157,7 +157,12 @@
             document.getElementById("saveQuote").addEventListener("click", postNewQuote());
             document.getElementById("addLineItemBtn").addEventListener("click", 
                 function() {addEmptyLineItem(document.getElementById("lineItemDisplayDiv"), document.getElementById("editLineItemTemplate"))});
+                
+            document.getElementById("searchBtn").addEventListener("click", function(){
+                window.location.href = ("./search-quotes.html?"+encodeURI(document.getElementById("searchBox").value));
+            });
         }
+
     </script>
 
 </body>
