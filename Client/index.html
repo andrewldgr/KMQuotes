@@ -54,7 +54,7 @@
     <script type="text/javascript">
         window.onload = function() {
             document.getElementById("searchBtn").addEventListener("click", function(){
-                window.location.href = ("./search-quotes.html?"+encodeURI(document.getElementById("searchBox").value));
+                window.location.href = ("./search-quotes.html?q="+encodeURI(document.getElementById("searchBox").value));
             });
         }
     </script>

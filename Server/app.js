@@ -26,7 +26,8 @@ let endpoint_counts = {
     post_quotes: {method: "POST", endpoint: "/quotes", quantity: 0},
     delete_line_item_id: {method: "DELETE", endpoint: "/line_items/{id}", quantity: 0},
     delete_quote_id: {method: "DELETE", endpoint: "/quotes/{id}", quantity: 0},
-    get_logout: {method: "GET", endpoint: "/logout", quantity: 0}
+    get_logout: {method: "GET", endpoint: "/logout", quantity: 0},
+    get_quotes_search: {method: "GET", endpoint: "/search/{q}", quantity: 0}
 };
 
 let totally_insecure_session = {};
@@ -239,6 +240,56 @@ app.get(ENDPOINT+"/quotes", (req, res) => {
     let sql =    "SELECT q.id, c.first_name, c.last_name "
                 +"FROM quote q, customer c, address a "
                 +"WHERE q.address_id=a.id && a.customer_id=c.id;";
+
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+        let qArr = result;
+        sql = "SELECT quote_id, ROUND(SUM(price*quantity), 2) AS cost FROM line_item GROUP BY quote_id;";
+        con.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+
+            for (i=0; i < qArr.length; i++) {
+                qArr[i].cost = 0;
+                for (j=0; j < result.length; j++) {
+                    if (qArr[i].id == result[j].quote_id) {
+                        qArr[i].cost = result[j].cost;
+                    }
+                }
+            }
+            let messageStr = JSON.stringify(qArr);
+            console.log("Sending Object: "+messageStr);
+
+            res.end(messageStr);
+        });
+    });
+});
+
+app.get(ENDPOINT+"/search/", (req, res) => {
+    res.redirect(ENDPOINT+"/quotes");
+});
+
+//get quotes by search
+app.get(ENDPOINT+"/search/:q", (req, res) => {
+    console.log("...GET /search/{q}");
+    endpoint_counts.get_quotes_search.quantity += 1;
+    
+    let sql =    "SELECT q.id, c.first_name, c.last_name "
+                +"FROM quote q, customer c, address a "
+                +"WHERE q.address_id=a.id && a.customer_id=c.id "
+                +"&& (c.first_name LIKE '%"+req.params.q+"%' "
+                +"OR c.last_name LIKE '%"+req.params.q+"%' "
+                +"OR c.phone LIKE '%"+req.params.q+"%' "
+                +"OR c.email LIKE '%"+req.params.q+"%' "
+                +"OR a.street_number LIKE '%"+req.params.q+"%' "
+                +"OR a.city LIKE '%"+req.params.q+"%' "
+                +"OR a.province LIKE '%"+req.params.q+"%' "
+                +"OR a.country LIKE '%"+req.params.q+"%' "
+                +"OR a.postal LIKE '%"+req.params.q+"%' "
+                +"OR q.id LIKE '%"+req.params.q+"%');"
 
     con.query(sql, function (err, result) {
         if (err) {
